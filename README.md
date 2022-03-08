@@ -13,5 +13,5 @@ This app is for managing and tracking a healthy diet. Not only does it help you 
 The following are the naming conventions used for branches
 
 - main/master -> principis
-- features    -> qualitatis/<issue>/<primary-description>
-- bug/hotfix  -> emendavi/<issue>/<primary-description>
+- features    -> qualitatis/\<issue\>/\<primary-description\>
+- bug/hotfix  -> emendavi/\<issue\>/\<primary-description\>
