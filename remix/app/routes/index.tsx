@@ -1,7 +1,9 @@
+import { Container } from '~/ui';
+
 export default function Index() {
     return (
-        <div>
-
-        </div>
+        <Container padding="py-8">
+            <h1>Home</h1>
+        </Container>
     );
 }

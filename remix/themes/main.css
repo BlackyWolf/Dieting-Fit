@@ -7,3 +7,12 @@
 .font-nunito {
     font-family: 'Nunito', sans-serif;
 }
+
+html,
+body {
+    @apply flex flex-col min-h-full;
+}
+
+body {
+    flex-grow: 1;
+}

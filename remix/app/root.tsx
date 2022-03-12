@@ -6,7 +6,15 @@ import {
     Scripts,
     ScrollRestoration,
 } from 'remix';
-import type { MetaFunction } from 'remix';
+import type { LinksFunction, MetaFunction } from 'remix';
+import { MainLayout } from './ui';
+import css from './styles/main.css';
+
+export const links: LinksFunction = () => {
+    return [
+        { rel: 'stylesheet', href: css }
+    ];
+};
 
 export const meta: MetaFunction = () => {
     return { title: 'New Remix App' };
@@ -26,7 +34,9 @@ export default function App() {
             </head>
 
             <body>
-                <Outlet />
+                <MainLayout>
+                    <Outlet />
+                </MainLayout>
 
                 <ScrollRestoration />
 
