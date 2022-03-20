@@ -7,7 +7,7 @@ type Properties = PropsWithChildren<{}>;
 export const MainLayout = ({ children }: Properties) => {
     return (
         <div className="flex flex-col flex-grow">
-            <TopNav />
+            <TopNav isAuthenticated={false} />
 
             <main className="flex-grow">
                 {children}
