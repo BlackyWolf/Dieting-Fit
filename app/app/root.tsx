@@ -5,10 +5,13 @@ import {
     Outlet,
     Scripts,
     ScrollRestoration,
+    useLoaderData,
 } from 'remix';
-import type { LinksFunction, MetaFunction } from 'remix';
-import { MainLayout } from './ui';
+import type { LinksFunction, LoaderFunction, MetaFunction } from 'remix';
+import { md5 } from './utilities';
 import css from './styles/main.css';
+import { UserProvider } from './providers';
+import { MainLayout } from './ui';
 
 export const links: LinksFunction = () => {
     return [
@@ -16,11 +19,27 @@ export const links: LinksFunction = () => {
     ];
 };
 
+export const loader: LoaderFunction = () => {
+    // TODO: Change to use authenticated user
+    const email = process.env.TEST_USER_EMAIL;
+    const name = process.env.TEST_USER_NAME;
+
+    return {
+        user: {
+            email,
+            imageUrl: 'https://www.gravatar.com/avatar/' + md5(email || ''),
+            name
+        }
+    };
+};
+
 export const meta: MetaFunction = () => {
-    return { title: 'New Remix App' };
+    return { title: 'Dieting Fit' };
 };
 
 export default function App() {
+    const data = useLoaderData();
+
     return (
         <html lang="en">
             <head>
@@ -34,9 +53,11 @@ export default function App() {
             </head>
 
             <body>
-                <MainLayout>
-                    <Outlet />
-                </MainLayout>
+                <UserProvider user={data.user}>
+                    <MainLayout>
+                        <Outlet />
+                    </MainLayout>
+                </UserProvider>
 
                 <ScrollRestoration />
 

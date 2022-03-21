@@ -1,3 +1,5 @@
+import { Fragment } from 'react';
+import { Link } from 'remix';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faBars,
@@ -5,15 +7,10 @@ import {
     faMagnifyingGlass,
     faTimes
 } from '@fortawesome/pro-duotone-svg-icons';
-import { Logo } from './branding';
-import { Link } from 'remix';
 import { Disclosure, Menu as HuiMenu, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
 import { joinClasses } from '~/utilities';
-
-interface Properties {
-    isAuthenticated: boolean;
-}
+import { Logo } from './branding';
+import { useUser } from '~/providers';
 
 interface UiLink {
     current?: boolean;
@@ -25,17 +22,13 @@ const navigation: UiLink[] = [
     { current: true, name: 'Home', to: '/' }
 ];
 
-const user = {
-    name: 'Tom Cook',
-    email: 'tom@example.com',
-    imageUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-};
-
 const userNavigation: UiLink[] = [
     { name: 'Logout', to: '/logout' }
 ];
 
-export const TopNav = ({ isAuthenticated }: Properties) => {
+export const TopNav = () => {
+    const [user] = useUser();
+
     return (
         <Disclosure as="header" className="bg-white shadow">
             {({ open }) => (
@@ -43,8 +36,8 @@ export const TopNav = ({ isAuthenticated }: Properties) => {
                     <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
                         <div className="relative h-16 flex justify-between">
                             <div className="relative z-10 px-2 flex lg:px-0">
-                                <div className="flex-shrink-0 flex items-center">
-                                    <Logo />
+                                <div className="flex-shrink flex items-center">
+                                    <Logo size="sm" />
                                 </div>
                             </div>
                             <div className="relative z-0 flex-1 px-2 flex items-center justify-center sm:absolute sm:inset-0">
@@ -81,58 +74,52 @@ export const TopNav = ({ isAuthenticated }: Properties) => {
                                 </Disclosure.Button>
                             </div>
                             <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
-                                {isAuthenticated ? (
-                                    <>
-                                        <button
-                                            type="button"
-                                            className="flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                        >
-                                            <span className="sr-only">View notifications</span>
+                                <button
+                                    type="button"
+                                    className="flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                >
+                                    <span className="sr-only">View notifications</span>
 
-                                            <FontAwesomeIcon icon={faBell} size="lg" className="text-gray-400" />
-                                        </button>
+                                    <FontAwesomeIcon icon={faBell} size="lg" className="text-gray-400" />
+                                </button>
 
-                                        <HuiMenu as="div" className="flex-shrink-0 relative ml-4">
-                                            <div>
-                                                <HuiMenu.Button className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                    <span className="sr-only">Open user menu</span>
+                                <HuiMenu as="div" className="flex-shrink-0 relative ml-4">
+                                    <div>
+                                        <HuiMenu.Button className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            <span className="sr-only">Open user menu</span>
 
-                                                    <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
-                                                </HuiMenu.Button>
-                                            </div>
+                                            <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                                        </HuiMenu.Button>
+                                    </div>
 
-                                            <Transition
-                                                as={Fragment}
-                                                enter="transition ease-out duration-100"
-                                                enterFrom="transform opacity-0 scale-95"
-                                                enterTo="transform opacity-100 scale-100"
-                                                leave="transition ease-in duration-75"
-                                                leaveFrom="transform opacity-100 scale-100"
-                                                leaveTo="transform opacity-0 scale-95"
-                                            >
-                                                <HuiMenu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
-                                                    {userNavigation.map(({ name, to }) => (
-                                                        <HuiMenu.Item key={name}>
-                                                            {({ active }) => (
-                                                                <Link
-                                                                    to={to}
-                                                                    className={joinClasses(
-                                                                        active ? 'bg-gray-100' : '',
-                                                                        'block py-2 px-4 text-sm text-gray-700'
-                                                                    )}
-                                                                >
-                                                                    {name}
-                                                                </Link>
+                                    <Transition
+                                        as={Fragment}
+                                        enter="transition ease-out duration-100"
+                                        enterFrom="transform opacity-0 scale-95"
+                                        enterTo="transform opacity-100 scale-100"
+                                        leave="transition ease-in duration-75"
+                                        leaveFrom="transform opacity-100 scale-100"
+                                        leaveTo="transform opacity-0 scale-95"
+                                    >
+                                        <HuiMenu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
+                                            {userNavigation.map(({ name, to }) => (
+                                                <HuiMenu.Item key={name}>
+                                                    {({ active }) => (
+                                                        <Link
+                                                            to={to}
+                                                            className={joinClasses(
+                                                                active ? 'bg-gray-100' : '',
+                                                                'block py-2 px-4 text-sm text-gray-700'
                                                             )}
-                                                        </HuiMenu.Item>
-                                                    ))}
-                                                </HuiMenu.Items>
-                                            </Transition>
-                                        </HuiMenu>
-                                    </>
-                                ) : (
-                                    <Link to="/login">Login</Link>
-                                )}
+                                                        >
+                                                            {name}
+                                                        </Link>
+                                                    )}
+                                                </HuiMenu.Item>
+                                            ))}
+                                        </HuiMenu.Items>
+                                    </Transition>
+                                </HuiMenu>
                             </div>
                         </div>
                         <nav className="hidden lg:py-2 lg:flex lg:space-x-8" aria-label="Global">
