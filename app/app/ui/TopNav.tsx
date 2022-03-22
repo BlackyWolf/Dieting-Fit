@@ -37,7 +37,7 @@ export const TopNav = () => {
                         <div className="relative h-16 flex justify-between">
                             <div className="relative z-10 px-2 flex lg:px-0">
                                 <div className="flex-shrink flex items-center">
-                                    <Logo size="sm" />
+                                    <Logo size="sm" resize />
                                 </div>
                             </div>
                             <div className="relative z-0 flex-1 px-2 flex items-center justify-center sm:absolute sm:inset-0">

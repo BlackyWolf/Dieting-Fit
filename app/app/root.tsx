@@ -3,15 +3,16 @@ import {
     LiveReload,
     Meta,
     Outlet,
+    redirect,
     Scripts,
     ScrollRestoration,
-    useLoaderData,
+    useActionData
 } from 'remix';
-import type { LinksFunction, LoaderFunction, MetaFunction } from 'remix';
-import { md5 } from './utilities';
+import type { ActionFunction, LinksFunction, MetaFunction } from 'remix';
 import css from './styles/main.css';
 import { UserProvider } from './providers';
 import { MainLayout } from './ui';
+import { getAuthenticatedUser } from './data';
 
 export const links: LinksFunction = () => {
     return [
@@ -19,18 +20,25 @@ export const links: LinksFunction = () => {
     ];
 };
 
-export const loader: LoaderFunction = () => {
-    // TODO: Change to use authenticated user
-    const email = process.env.TEST_USER_EMAIL;
-    const name = process.env.TEST_USER_NAME;
+export const action: ActionFunction = ({ request }) => {
+    const user = getAuthenticatedUser(request);
+    const url = new URL(request.url);
+
+    if (!user && url.pathname !== '/login') {
+        return redirect('/login');
+    }
 
     return {
-        user: {
-            email,
-            imageUrl: 'https://www.gravatar.com/avatar/' + md5(email || ''),
-            name
-        }
+        user
     };
+
+    // return {
+    //     user: {
+    //         email,
+    //         imageUrl: 'https://www.gravatar.com/avatar/' + md5(email || ''),
+    //         name
+    //     }
+    // };
 };
 
 export const meta: MetaFunction = () => {
@@ -38,7 +46,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function App() {
-    const data = useLoaderData();
+    const data = useActionData();
 
     return (
         <html lang="en">
@@ -53,11 +61,17 @@ export default function App() {
             </head>
 
             <body>
-                <UserProvider user={data.user}>
-                    <MainLayout>
-                        <Outlet />
-                    </MainLayout>
-                </UserProvider>
+                {data.user && (
+                    <UserProvider user={data.user}>
+                        <MainLayout>
+                            <Outlet />
+                        </MainLayout>
+                    </UserProvider>
+                )}
+
+                {!data.user && (
+                    <Outlet />
+                )}
 
                 <ScrollRestoration />
 

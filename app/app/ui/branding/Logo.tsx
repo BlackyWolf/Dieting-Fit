@@ -5,13 +5,14 @@ import { joinClasses } from '~/utilities';
 type LogoSize = 'sm' | 'md' | 'lg';
 
 interface Properties {
-    size?: LogoSize
+    resize?: boolean;
+    size?: LogoSize;
 }
 
-function getSizeClass(size: LogoSize) {
+function getSizeClass(size: LogoSize, resize: boolean) {
     switch (size) {
         case 'sm':
-            return 'sm:text-2xl md:text-3xl lg:text-4xl';
+            return resize ? 'sm:text-2xl md:text-3xl lg:text-4xl' : 'text-3xl';
 
         case 'lg':
             return '';
@@ -21,10 +22,10 @@ function getSizeClass(size: LogoSize) {
     }
 }
 
-export const Logo = ({ size = 'md' }: Properties) => {
+export const Logo = ({ resize = false, size = 'md' }: Properties) => {
     const classes = joinClasses(
         'font-nunito font-black uppercase text-neutral-500',
-        getSizeClass(size)
+        getSizeClass(size, resize)
     );
 
     return (
