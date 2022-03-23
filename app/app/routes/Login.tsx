@@ -1,12 +1,12 @@
 import { Link } from 'remix';
-import { Container, Logo } from '~/ui';
+import { Logo } from '~/ui';
 
-export const Login = () => {
+export default function Login() {
     return (
-        <div className="min-h-full flex">
+        <div className="min-h-full flex flex-grow">
             <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
                 <div className="mx-auto w-full max-w-sm lg:w-96">
-                    <div>
+                    <div className="flex flex-col items-center">
                         <Logo />
 
                         <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
@@ -20,7 +20,7 @@ export const Login = () => {
                     </div>
 
                     <div className="mt-8">
-                        <div>
+                        {/* <div>
                             <div>
                                 <p className="text-sm font-medium text-gray-700">Sign in with</p>
 
@@ -79,7 +79,7 @@ export const Login = () => {
                                     <span className="px-2 bg-white text-gray-500">Or continue with</span>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="mt-6">
                             <form action="#" method="POST" className="space-y-6">
