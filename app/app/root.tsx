@@ -6,9 +6,9 @@ import {
     redirect,
     Scripts,
     ScrollRestoration,
-    useActionData
+    useLoaderData
 } from 'remix';
-import type { ActionFunction, LinksFunction, MetaFunction } from 'remix';
+import type { LinksFunction, LoaderFunction, MetaFunction } from 'remix';
 import css from './styles/main.css';
 import { UserProvider } from './providers';
 import { MainLayout } from './ui';
@@ -20,25 +20,19 @@ export const links: LinksFunction = () => {
     ];
 };
 
-export const action: ActionFunction = ({ request }) => {
-    const user = getAuthenticatedUser(request);
+export const loader: LoaderFunction = async ({ request }) => {
+    const user = await getAuthenticatedUser(request);
     const url = new URL(request.url);
 
     if (!user && url.pathname !== '/login') {
         return redirect('/login');
     }
 
-    return {
-        user
-    };
+    if (user && (url.pathname === '/login' || url.pathname === '/register')) {
+        return redirect('/');
+    }
 
-    // return {
-    //     user: {
-    //         email,
-    //         imageUrl: 'https://www.gravatar.com/avatar/' + md5(email || ''),
-    //         name
-    //     }
-    // };
+    return { user };
 };
 
 export const meta: MetaFunction = () => {
@@ -46,7 +40,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function App() {
-    const data = useActionData();
+    const data = useLoaderData();
 
     return (
         <html lang="en">
@@ -61,7 +55,7 @@ export default function App() {
             </head>
 
             <body>
-                {data.user && (
+                {data?.user && (
                     <UserProvider user={data.user}>
                         <MainLayout>
                             <Outlet />
@@ -69,7 +63,7 @@ export default function App() {
                     </UserProvider>
                 )}
 
-                {!data.user && (
+                {!data?.user && (
                     <Outlet />
                 )}
 
