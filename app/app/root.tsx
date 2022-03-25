@@ -24,11 +24,11 @@ export const loader: LoaderFunction = async ({ request }) => {
     const user = await getAuthenticatedUser(request);
     const url = new URL(request.url);
 
-    if (!user && url.pathname !== '/login') {
-        return redirect('/login');
+    if (!user && url.pathname !== '/signin' && url.pathname !== '/register') {
+        return redirect('/signin');
     }
 
-    if (user && (url.pathname === '/login' || url.pathname === '/register')) {
+    if (user && (url.pathname === '/sign' || url.pathname === '/register')) {
         return redirect('/');
     }
 
