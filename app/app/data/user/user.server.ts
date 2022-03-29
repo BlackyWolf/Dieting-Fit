@@ -65,6 +65,8 @@ export async function getAuthenticatedUserAsync(request: Request) {
         if (!userId) return null;
 
         const userPromise = getUserByIdAsync(userId);
+
+        // TODO: Create user profile method
         const profilePromise = getUserProfileAsync(userId);
     } catch (error) {
         console.log(error);
