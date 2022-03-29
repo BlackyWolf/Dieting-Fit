@@ -18,16 +18,17 @@ interface UiLink {
     to: string;
 }
 
-const navigation: UiLink[] = [
-    { current: true, name: 'Home', to: '/' }
-];
-
-const userNavigation: UiLink[] = [
-    { name: 'Logout', to: '/logout' }
-];
-
 export const TopNav = () => {
     const [user] = useUser();
+
+    const navigation: UiLink[] = [
+        { current: true, name: 'Home', to: '/' },
+        { current: false, name: 'About', to: '/about' }
+    ];
+
+    const userNavigation: UiLink[] = [
+        { name: 'Logout', to: '/logout' }
+    ];
 
     return (
         <Disclosure as="header" className="bg-white shadow">
@@ -36,9 +37,9 @@ export const TopNav = () => {
                     <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
                         <div className="relative h-16 flex justify-between">
                             <div className="relative z-10 px-2 flex lg:px-0">
-                                <div className="flex-shrink flex items-center">
+                                <Link to="/" className="flex-shrink flex items-center">
                                     <Logo size="sm" resize />
-                                </div>
+                                </Link>
                             </div>
                             <div className="relative z-0 flex-1 px-2 flex items-center justify-center sm:absolute sm:inset-0">
                                 <div className="w-full sm:max-w-xs">

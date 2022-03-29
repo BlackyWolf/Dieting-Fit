@@ -20,10 +20,12 @@ const storage = createCookieSessionStorage({
     }
 });
 
-export async function createUserSession(userId: string) {
+export async function createUserSession(userId: string): Promise<string> {
     const session = await storage.getSession();
 
     session.set(userSessionKey, userId);
+
+    return await storage.commitSession(session);
 }
 
 export async function destroySession(cookie: string) {

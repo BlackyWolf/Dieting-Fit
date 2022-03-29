@@ -18,7 +18,7 @@ model User {
     passwordHash    String
     profile         UserProfile?
     updatedAt       DateTime?       @updatedAt @db.Timestamptz(6)
-    userName        String          @unique
+    username        String          @unique
 }
 
 model UserProfile {

@@ -1,42 +1,33 @@
-import { Form, Link, useTransition } from 'remix';
+import { Form, Link, redirect, useTransition } from 'remix';
 import type { ActionFunction } from 'remix';
-import { badRequest } from '~/data/responses.server';
+import { badRequest, internalServerError } from '~/data/responses.server';
+import { buildCreateUserData, createUserSession, registerUserAsync, validateRegisterUserFormAsync } from '~/data/user';
 import { Logo } from '~/ui';
+
 // Photo by Burst from Pexels
 import backgroundImage from '~/images/pexels-burst-374052.jpg';
-
-type ActionData = {
-    formError?: string;
-    fieldErrors?: {
-        email?: string;
-        password?: string;
-        username?: string;
-    };
-    fields?: {
-        email: string;
-        password: string;
-        username: string;
-    }
-};
 
 export const action: ActionFunction = async ({ request }) => {
     const form = await request.formData();
 
-    const email = form.get('email');
-    const password = form.get('password');
-    const username = form.get('username');
+    const createUserData = buildCreateUserData(form);
 
-    if (
-        typeof email !== 'string'
-        || typeof password !== 'string'
-        || typeof username !== 'string'
-    ) {
-        return badRequest({
-            formError: 'The form was not submitted correctly.'
-        });
-    }
+    const formModel = await validateRegisterUserFormAsync(createUserData);
+
+    if (!formModel) return badRequest(formModel);
+
+    const user = await registerUserAsync(createUserData);
+
+    if (!user) return internalServerError();
+
+    const sessionCookie = await createUserSession(user.id);
+
+    return redirect('/', {
+        headers: {
+            'Set-Cookie': sessionCookie
+        }
+    });
 };
-
 
 export default function Login() {
     const transition = useTransition();

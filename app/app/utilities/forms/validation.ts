@@ -27,24 +27,24 @@ const passwordStrengthOptions: Options<string> = [
     }
 ];
 
-export function validateEmail(email: string): string | undefined {
-    if (!email) return 'The email is required.';
+function isNotNull(data: unknown, parameterName: string) {
+    if (!data) return `The ${parameterName} is required`;
+}
 
-    if (typeof email !== 'string') {
-        return 'The email is not properly formatted.';
+function isString(data: unknown, parameterName: string) {
+    if (typeof data !== 'string') {
+        return `The ${parameterName} is not properly formatted.`;
     }
+}
 
-    const strength = passwordStrength(email, passwordStrengthOptions);
-
-    if (strength.id < 2) return 'Your email is too weak.';
+export function validateEmail(email: string): string | undefined {
+    return isNotNull(email, 'email') || isString(email, 'email');
 }
 
 export function validatePassword(password: string): string | undefined {
-    if (!password) return 'The password is required.';
+    const error = isNotNull(password, 'password') || isString(password, 'password');
 
-    if (typeof password !== 'string') {
-        return 'The password is not properly formatted.';
-    }
+    if (error) return error;
 
     const strength = passwordStrength(password, passwordStrengthOptions);
 
@@ -52,9 +52,5 @@ export function validatePassword(password: string): string | undefined {
 }
 
 export function validateUsername(username: string): string | undefined {
-    if (!username) return 'The username is required.';
-
-    if (typeof username !== 'string') {
-        return 'The username is not properly formatted.';
-    }
+    return isNotNull(username, 'username') || isString(username, 'username');
 }

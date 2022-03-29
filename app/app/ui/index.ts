@@ -1,4 +1,4 @@
 export * from './branding';
 export * from './Container';
-export * from './layouts';
+export * from './Footer';
 export * from './TopNav';

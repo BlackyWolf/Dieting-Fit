@@ -11,8 +11,8 @@ import {
 import type { LinksFunction, LoaderFunction, MetaFunction } from 'remix';
 import css from './styles/main.css';
 import { UserProvider } from './providers';
-import { MainLayout } from './ui';
-import { getAuthenticatedUser } from './data';
+import { Footer, TopNav } from './ui';
+import { getAuthenticatedUserAsync } from './data/user';
 
 export const links: LinksFunction = () => {
     return [
@@ -21,18 +21,22 @@ export const links: LinksFunction = () => {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-    const user = await getAuthenticatedUser(request);
+    const user = await getAuthenticatedUserAsync(request);
     const url = new URL(request.url);
+    const path = url.pathname;
 
-    if (!user && url.pathname !== '/signin' && url.pathname !== '/register') {
+    if (!user && path !== '/signin' && path !== '/register') {
         return redirect('/signin');
     }
 
-    if (user && (url.pathname === '/sign' || url.pathname === '/register')) {
+    if (user && (path === '/signin' || path === '/register')) {
         return redirect('/');
     }
 
-    return { user };
+    return {
+        path,
+        user
+    };
 };
 
 export const meta: MetaFunction = () => {
@@ -57,9 +61,15 @@ export default function App() {
             <body>
                 {data?.user && (
                     <UserProvider user={data.user}>
-                        <MainLayout>
-                            <Outlet />
-                        </MainLayout>
+                        <div className="flex flex-col flex-grow">
+                            <TopNav />
+
+                            <main className="flex-grow">
+                                <Outlet />
+                            </main>
+
+                            <Footer margin="mt-auto" />
+                        </div>
                     </UserProvider>
                 )}
 
