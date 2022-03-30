@@ -32,6 +32,6 @@ model UserProfile {
     phone           String?
     private         Boolean         @default(true)
     updatedAt       DateTime?       @updatedAt @db.Timestamptz(6)
-    user            User            @relation(fields: [userId], references: [id], map: "fk_COLUMN_ref_TABLE")
+    user            User            @relation(fields: [userId], references: [id], map: "fk_COLUMN_ref_TABLE", onDelete: Cascade)
     userId          String          @db.Uuid
 }
