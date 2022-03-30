@@ -1,28 +1,22 @@
 import { createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useState } from 'react';
+import { AuthenticatedUser } from '~/data/user';
 
-export interface UserData {
-    email: string;
-    imageUrl: string;
-    name: string;
-}
-
-const defaultUser: UserData = {
-    email: 'user@example.com',
+const defaultUser: AuthenticatedUser = {
     imageUrl: 'https://www.gravatar.com/avatar',
-    name: 'Example User'
+    username: 'ExampleUser'
 };
 
-export const UserContext = createContext<[UserData, Dispatch<SetStateAction<UserData>>]>([
+export const UserContext = createContext<[AuthenticatedUser, Dispatch<SetStateAction<AuthenticatedUser>>]>([
     defaultUser,
     () => {}
 ]);
 
 type Properties = PropsWithChildren<{
-    user?: UserData | null;
+    user?: AuthenticatedUser | null;
 }>;
 
 export const UserProvider = (properties: Properties) => {
-    const [user, setUser] = useState<UserData>(
+    const [user, setUser] = useState<AuthenticatedUser>(
         properties.user || defaultUser
     );
 
