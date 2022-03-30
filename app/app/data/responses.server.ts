@@ -1,10 +1,10 @@
 import { json } from 'remix';
 
-export function badRequest<TContent>(content: TContent) {
+export function badRequest<TContent>(content?: TContent) {
     return json(content, { status: 400 });
 }
 
-export function conflict<TContent>(content: TContent) {
+export function conflict<TContent>(content?: TContent) {
     return json(content, { status: 409 });
 }
 
@@ -19,9 +19,17 @@ export function internalServerError() {
 }
 
 export function noContent() {
-    return json(null, { status: 204 });
+    return json(undefined, { status: 204 });
 }
 
-export function ok<TContent>(content: TContent) {
+export function notFound<TContent>(content?: TContent) {
+    return json(content, { status: 404 });
+}
+
+export function notImplemented() {
+    return json(undefined, { status: 501 });
+}
+
+export function ok<TContent>(content?: TContent) {
     return json(content, { status: 200 });
 }
