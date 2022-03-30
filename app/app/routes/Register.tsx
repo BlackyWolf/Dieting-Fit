@@ -1,4 +1,4 @@
-import { Form, Link, redirect, useTransition } from 'remix';
+import { Form, Link, redirect, useActionData, useTransition } from 'remix';
 import type { ActionFunction } from 'remix';
 import { badRequest, internalServerError } from '~/data/responses.server';
 import { buildCreateUserData, createUserSession, registerUserAsync, validateRegisterUserFormAsync } from '~/data/user';
@@ -14,7 +14,7 @@ export const action: ActionFunction = async ({ request }) => {
 
     const formModel = await validateRegisterUserFormAsync(createUserData);
 
-    if (!formModel) return badRequest(formModel);
+    if (formModel) return badRequest(formModel);
 
     const user = await registerUserAsync(createUserData);
 
@@ -31,6 +31,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function Login() {
     const transition = useTransition();
+    const action = useActionData();
 
     return (
         <div className="min-h-full flex flex-grow">
@@ -66,6 +67,7 @@ export default function Login() {
                                                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                             />
                                         </div>
+                                        <p><small className="text-red-500 font-bold">{action?.fieldErrors?.username}</small></p>
                                     </div>
 
                                     <div>
@@ -81,6 +83,7 @@ export default function Login() {
                                                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                             />
                                         </div>
+                                        <p><small className="text-red-500 font-bold">{action?.fieldErrors?.email}</small></p>
                                     </div>
 
                                     <div className="space-y-1">
@@ -96,6 +99,7 @@ export default function Login() {
                                                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                             />
                                         </div>
+                                        <p><small className="text-red-500 font-bold">{action?.fieldErrors?.password}</small></p>
                                     </div>
 
                                     <button

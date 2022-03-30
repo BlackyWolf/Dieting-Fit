@@ -1,23 +1,24 @@
-import type { User } from '@prisma/client';
-import { hashPassword, verifyPassword } from '~/utilities';
+import type { User, UserProfile } from '@prisma/client';
+import { hashPassword, md5, verifyPassword } from '~/utilities';
 import { db } from '~/data/db.server';
 import { destroySession, getUserSession } from './session.server';
-import { CreateUserData } from './CreateUserData';
+import type { CreateUserData } from './CreateUserData';
 import { FormModel, isFormValid } from '~/data/form';
 import { validateEmail, validatePassword, validateUsername } from '~/utilities/forms/validation';
+import type { AuthenticatedUser } from './AuthenticatedUser';
 
-export type { User };
+export type { User, UserProfile };
 
-export async function authenticateUserAsync(username: string, password: string): Promise<User | null> {
+export async function authenticateUserAsync(username: string, password: string): Promise<User | undefined> {
     const user = await db.user.findUnique({
         where: { username }
     });
 
-    if (!user) return null;
+    if (!user) return;
 
     const authenticated = await verifyPassword(user.passwordHash, password);
 
-    if (!authenticated) return null;
+    if (!authenticated) return;
 
     user.passwordHash = '';
 
@@ -54,20 +55,28 @@ export async function doesUsernameExistAsync(username: string): Promise<boolean>
     return !!user;
 }
 
-export async function getAuthenticatedUserAsync(request: Request) {
+export async function getAuthenticatedUserAsync(request: Request): Promise<AuthenticatedUser | undefined> {
     const cookie = request.headers.get('Cookie');
 
-    if (!cookie) return null;
+    if (!cookie) return;
 
     try {
         const userId = await getUserSession(cookie);
 
-        if (!userId) return null;
+        if (!userId) return;
 
-        const userPromise = getUserByIdAsync(userId);
+        const username = await getUsername(userId);
 
-        // TODO: Create user profile method
-        const profilePromise = getUserProfileAsync(userId);
+        if (!username) return;
+
+        const imageUrl = await getProfilePicture(userId);
+
+        if (!imageUrl) return;
+
+        return {
+            imageUrl,
+            username
+        };
     } catch (error) {
         console.log(error);
 
@@ -75,25 +84,56 @@ export async function getAuthenticatedUserAsync(request: Request) {
     }
 }
 
-export async function getUserByIdAsync(id: string) {
+export async function getProfilePicture(userId: string): Promise<string | undefined> {
+    const profile = await db.userProfile.findUnique({
+        select: { imageUrl: true },
+        where: { userId }
+    });
+
+    return profile?.imageUrl;
+}
+
+export async function getUserByIdAsync(id: string): Promise<User | null> {
     return await db.user.findUnique({
         where: { id }
+    });
+}
+
+export async function getUsername(id: string): Promise<string | undefined> {
+    const user = await db.user.findUnique({
+        select: { username: true },
+        where: { id }
+    });
+
+    return user?.username;
+}
+
+export async function getUserProfileAsync(userId: string): Promise<UserProfile | null> {
+    return await db.userProfile.findFirst({
+        where: { userId }
     });
 }
 
 export async function registerUserAsync({ email, password, username }: CreateUserData): Promise<User> {
     const passwordHash = await hashPassword(password);
 
-    const newUser = await db.user.create({
+    const user = await db.user.create({
         data: { email, passwordHash, username }
     });
 
-    newUser.passwordHash = '';
+    await db.userProfile.create({
+        data: {
+            imageUrl: 'https://www.gravatar.com/avatar/' + md5(email),
+            userId: user.id
+        }
+    });
 
-    return newUser;
+    user.passwordHash = '';
+
+    return user;
 }
 
-export async function validateRegisterUserFormAsync(user: CreateUserData): Promise<FormModel<CreateUserData> | null> {
+export async function validateRegisterUserFormAsync(user: CreateUserData): Promise<FormModel<CreateUserData> | undefined> {
     const formModel: FormModel<CreateUserData> = {
         fieldErrors: {
             email: validateEmail(user.email),
@@ -103,23 +143,21 @@ export async function validateRegisterUserFormAsync(user: CreateUserData): Promi
         fields: user
     };
 
-    if (!isFormValid(formModel)) return formModel;
-
     const emailExistsPromise = doesEmailExistAsync(user.email);
-    const usernameExistsPromise = doesUsernameExistAsync(user.email);
+    const usernameExistsPromise = doesUsernameExistAsync(user.username);
 
     const emailExists = await emailExistsPromise;
     const usernameExists = await usernameExistsPromise;
-
-    if (emailExists) {
-        formModel.fieldErrors.email = 'This email is already in use by another account.'
-    }
 
     if (usernameExists) {
         formModel.fieldErrors.username = 'This username is already in use by another account.'
     }
 
+    if (emailExists) {
+        formModel.fieldErrors.email = 'This email is already in use by another account.'
+    }
+
     if (!isFormValid(formModel)) return formModel;
 
-    return null;
+    return;
 }
