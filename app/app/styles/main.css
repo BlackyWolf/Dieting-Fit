@@ -566,6 +566,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: 0.25rem;
 }
 
+.mt-auto{
+  margin-top: auto;
+}
+
 .mt-6{
   margin-top: 1.5rem;
 }
@@ -600,10 +604,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .mt-3{
   margin-top: 0.75rem;
-}
-
-.mt-auto{
-  margin-top: auto;
 }
 
 .block{
@@ -650,6 +650,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 2.5rem;
 }
 
+.h-12{
+  height: 3rem;
+}
+
 .min-h-full{
   min-height: 100%;
 }
@@ -680,6 +684,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-10{
   width: 2.5rem;
+}
+
+.w-12{
+  width: 3rem;
 }
 
 .max-w-sm{
@@ -790,6 +798,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .border-t{
   border-top-width: 1px;
+}
+
+.border-b{
+  border-bottom-width: 1px;
 }
 
 .border-gray-300{
@@ -934,6 +946,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   font-weight: 900;
 }
 
+.font-bold{
+  font-weight: 700;
+}
+
 .uppercase{
   text-transform: uppercase;
 }
@@ -986,6 +1002,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-lime-500{
   --tw-text-opacity: 1;
   color: rgb(132 204 22 / var(--tw-text-opacity));
+}
+
+.text-red-500{
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
 }
 
 .placeholder-gray-400::-moz-placeholder{
