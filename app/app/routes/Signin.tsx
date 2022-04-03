@@ -1,9 +1,44 @@
-import { Link } from 'remix';
+import { ActionFunction, Form, Link, redirect, useActionData, useTransition } from 'remix';
 import { Logo } from '~/ui';
 // Photo by Trang Doan from Pexels: https://www.pexels.com/photo/assorted-sliced-fruits-1128678/
 import backgroundImage from '~/images/pexels-trang-doan-1128678.jpg';
+import { authenticateUserAsync, buildSignInUserData, createUserSession, validateSignInUserFormAsync } from '~/data/user';
+import { badRequest, internalServerError } from '~/data/responses.server';
+import { SignInUserData } from '~/data/user/SignInUserData';
+import { FormModel } from '~/data/form';
+
+export const action: ActionFunction = async ({ request }) => {
+    const form = await request.formData();
+
+    const signInUserData = buildSignInUserData(form);
+
+    const formModel = await validateSignInUserFormAsync(signInUserData);
+
+    if (formModel) return badRequest(formModel);
+
+    const user = await authenticateUserAsync(signInUserData.username, signInUserData.password);
+
+    if (!user) {
+        return badRequest<FormModel<SignInUserData>>({
+            fieldErrors: {},
+            fields: signInUserData,
+            formError: 'Unable to authenticate user'
+        });
+    }
+
+    const sessionCookie = await createUserSession(user.id, signInUserData.rememberMe);
+
+    return redirect('/', {
+        headers: {
+            'Set-Cookie': sessionCookie
+        }
+    });
+};
 
 export default function Login() {
+    const transition = useTransition();
+    const action = useActionData();
+
     return (
         <div className="min-h-full flex flex-grow">
             <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
@@ -84,68 +119,78 @@ export default function Login() {
                         </div> */}
 
                         <div className="mt-6">
-                            <form action="#" method="POST" className="space-y-6">
-                                <div>
-                                    <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                                        Username
-                                    </label>
-                                    <div className="mt-1">
-                                        <input
-                                            id="username"
-                                            name="username"
-                                            type="text"
-                                            autoComplete="username"
-                                            required
-                                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        />
-                                    </div>
-                                </div>
+                            <Form method="post">
+                                <fieldset disabled={transition.state === 'submitting'} className="space-y-6">
+                                    {action?.formError && (
+                                        <p className="bg-red-100 border border-red-200 px-4 py-2 rounded-md">
+                                            <small className="text-red-500 font-bold">{action?.formError}</small>
+                                        </p>
+                                    )}
 
-                                <div className="space-y-1">
-                                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                                        Password
-                                    </label>
-                                    <div className="mt-1">
-                                        <input
-                                            id="password"
-                                            name="password"
-                                            type="password"
-                                            autoComplete="current-password"
-                                            required
-                                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center">
-                                        <input
-                                            id="remember-me"
-                                            name="remember-me"
-                                            type="checkbox"
-                                            className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                                        />
-                                        <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                                            Remember me
+                                    <div>
+                                        <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                                            Username
                                         </label>
+                                        <div className="mt-1">
+                                            <input
+                                                id="username"
+                                                name="username"
+                                                type="text"
+                                                autoComplete="username"
+                                                required
+                                                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            />
+                                        </div>
+                                        <p><small className="text-red-500 font-bold">{action?.fieldErrors?.username}</small></p>
                                     </div>
 
-                                    <div className="text-sm">
-                                        <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                                            Forgot your password?
-                                        </a>
+                                    <div className="space-y-1">
+                                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                            Password
+                                        </label>
+                                        <div className="mt-1">
+                                            <input
+                                                id="password"
+                                                name="password"
+                                                type="password"
+                                                autoComplete="current-password"
+                                                required
+                                                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            />
+                                        </div>
+                                        <p><small className="text-red-500 font-bold">{action?.fieldErrors?.password}</small></p>
                                     </div>
-                                </div>
 
-                                <div>
-                                    <button
-                                        type="submit"
-                                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                    >
-                                        Sign in
-                                    </button>
-                                </div>
-                            </form>
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center">
+                                            <input
+                                                id="remember-me"
+                                                name="remember-me"
+                                                type="checkbox"
+                                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                            />
+                                            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                                                Remember me
+                                            </label>
+                                        </div>
+
+                                        <div className="text-sm">
+                                            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                                                Forgot your password?
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <button
+                                            type="submit"
+                                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                        >
+                                            Sign in
+                                        </button>
+                                    </div>
+                                </fieldset>
+                            </Form>
                         </div>
                     </div>
                 </div>

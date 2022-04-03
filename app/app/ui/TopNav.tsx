@@ -15,7 +15,8 @@ import { useUser } from '~/providers';
 interface UiLink {
     current?: boolean;
     name: string;
-    to: string;
+    onClick?: () => void;
+    to?: string;
 }
 
 export const TopNav = () => {
@@ -27,7 +28,9 @@ export const TopNav = () => {
     ];
 
     const userNavigation: UiLink[] = [
-        { name: 'Logout', to: '/logout' }
+        { name: 'Logout', onClick: () => {
+
+        } }
     ];
 
     return (
@@ -106,15 +109,21 @@ export const TopNav = () => {
                                             {userNavigation.map(({ name, to }) => (
                                                 <HuiMenu.Item key={name}>
                                                     {({ active }) => (
-                                                        <Link
-                                                            to={to}
-                                                            className={joinClasses(
-                                                                active ? 'bg-gray-100' : '',
-                                                                'block py-2 px-4 text-sm text-gray-700'
-                                                            )}
-                                                        >
-                                                            {name}
-                                                        </Link>
+                                                        to ? (
+                                                            <Link
+                                                                to={to}
+                                                                className={joinClasses(
+                                                                    active ? 'bg-gray-100' : '',
+                                                                    'block py-2 px-4 text-sm text-gray-700'
+                                                                )}
+                                                            >
+                                                                {name}
+                                                            </Link>
+                                                        ) : (
+                                                            <span className="block py-2 px-4 text-sm text-gray-700">
+                                                                {name}
+                                                            </span>
+                                                        )
                                                     )}
                                                 </HuiMenu.Item>
                                             ))}

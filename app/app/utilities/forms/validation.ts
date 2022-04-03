@@ -27,6 +27,12 @@ const passwordStrengthOptions: Options<string> = [
     }
 ];
 
+function isBoolean(data: unknown, parameterName: string) {
+    if (typeof data !== 'boolean') {
+        return `The ${parameterName} field is not properly formatted.`;
+    }
+}
+
 function isNotNull(data: unknown, parameterName: string) {
     if (!data) return `The ${parameterName} is required`;
 }
@@ -41,14 +47,22 @@ export function validateEmail(email: string): string | undefined {
     return isNotNull(email, 'email') || isString(email, 'email');
 }
 
-export function validatePassword(password: string): string | undefined {
+export function validatePassword(password: string, strengthCheck = true): string | undefined {
     const error = isNotNull(password, 'password') || isString(password, 'password');
 
     if (error) return error;
 
-    const strength = passwordStrength(password, passwordStrengthOptions);
+    if (strengthCheck) {
+        const strength = passwordStrength(password, passwordStrengthOptions);
 
-    if (strength.id < 2) return 'Your password is too weak.';
+        if (strength.id < 2) return 'Your password is too weak.';
+    }
+}
+
+export function validateRememberMe(rememberMe?: boolean): string | undefined {
+    if (!rememberMe) return;
+
+    return isBoolean(rememberMe, 'remember me');
 }
 
 export function validateUsername(username: string): string | undefined {

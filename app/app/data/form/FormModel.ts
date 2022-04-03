@@ -1,7 +1,7 @@
 export type FormModel<TData> = {
-    formError?: string;
     fieldErrors: Record<string, string | undefined>;
     fields: TData;
+    formError?: string;
 };
 
 export function isFormValid(formModel: FormModel<any>) {

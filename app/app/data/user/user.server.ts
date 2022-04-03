@@ -4,8 +4,9 @@ import { db } from '~/data/db.server';
 import { destroySession, getUserSession } from './session.server';
 import type { CreateUserData } from './CreateUserData';
 import { FormModel, isFormValid } from '~/data/form';
-import { validateEmail, validatePassword, validateUsername } from '~/utilities/forms/validation';
+import { validateEmail, validatePassword, validateRememberMe, validateUsername } from '~/utilities/forms/validation';
 import type { AuthenticatedUser } from './AuthenticatedUser';
+import { SignInUserData } from './SignInUserData';
 
 export type { User, UserProfile };
 
@@ -33,6 +34,18 @@ export function buildCreateUserData(form: FormData): CreateUserData {
     return {
         email,
         password,
+        username
+    };
+}
+
+export function buildSignInUserData(form: FormData): SignInUserData {
+    const password = form.get('password')?.toString() || '';
+    const rememberMe = form.get('remember-me')?.valueOf() as boolean;
+    const username = form.get('username')?.toString() || '';
+
+    return {
+        password,
+        rememberMe,
         username
     };
 }
@@ -156,6 +169,21 @@ export async function validateRegisterUserFormAsync(user: CreateUserData): Promi
     if (emailExists) {
         formModel.fieldErrors.email = 'This email is already in use by another account.'
     }
+
+    if (!isFormValid(formModel)) return formModel;
+
+    return;
+}
+
+export async function validateSignInUserFormAsync(user: SignInUserData): Promise<FormModel<SignInUserData> | undefined> {
+    const formModel: FormModel<SignInUserData> = {
+        fieldErrors: {
+            password: validatePassword(user.password, false),
+            rememberMe: validateRememberMe(user.rememberMe),
+            username: validateEmail(user.username)
+        },
+        fields: user
+    };
 
     if (!isFormValid(formModel)) return formModel;
 
