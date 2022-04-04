@@ -15,8 +15,7 @@ import { useUser } from '~/providers';
 interface UiLink {
     current?: boolean;
     name: string;
-    onClick?: () => void;
-    to?: string;
+    to: string;
 }
 
 export const TopNav = () => {
@@ -28,9 +27,7 @@ export const TopNav = () => {
     ];
 
     const userNavigation: UiLink[] = [
-        { name: 'Logout', onClick: () => {
-
-        } }
+        { name: 'Sign out', to: '/signout' }
     ];
 
     return (
@@ -109,21 +106,15 @@ export const TopNav = () => {
                                             {userNavigation.map(({ name, to }) => (
                                                 <HuiMenu.Item key={name}>
                                                     {({ active }) => (
-                                                        to ? (
-                                                            <Link
-                                                                to={to}
-                                                                className={joinClasses(
-                                                                    active ? 'bg-gray-100' : '',
-                                                                    'block py-2 px-4 text-sm text-gray-700'
-                                                                )}
-                                                            >
-                                                                {name}
-                                                            </Link>
-                                                        ) : (
-                                                            <span className="block py-2 px-4 text-sm text-gray-700">
-                                                                {name}
-                                                            </span>
-                                                        )
+                                                        <Link
+                                                            to={to}
+                                                            className={joinClasses(
+                                                                active ? 'bg-gray-100' : '',
+                                                                'block py-2 px-4 text-sm text-gray-700'
+                                                            )}
+                                                        >
+                                                            {name}
+                                                        </Link>
                                                     )}
                                                 </HuiMenu.Item>
                                             ))}
