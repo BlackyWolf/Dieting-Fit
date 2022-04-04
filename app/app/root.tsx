@@ -64,7 +64,7 @@ export default function App() {
                         <div className="flex flex-col flex-grow">
                             <TopNav />
 
-                            <main className="flex-grow">
+                            <main className="flex-grow flex flex-col">
                                 <Outlet />
                             </main>
 
