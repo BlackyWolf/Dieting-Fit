@@ -1,11 +1,16 @@
 import { Fragment, PropsWithChildren, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
+type VoidFunction = () => void;
+type VoidPromise = () => Promise<void>;
+
+type VoidOrPromise = VoidFunction | VoidPromise;
+
 type Properties = PropsWithChildren<{
     cancel?: string;
     confirm?: string;
-    onClose?: () => void | (() => Promise<void>);
-    onConfirm?: () => void | (() => Promise<void>);
+    onClose?: VoidOrPromise;
+    onConfirm?: VoidOrPromise;
     title?: string;
     visible?: boolean;
 }>;
@@ -106,7 +111,7 @@ export const Modal = ({
                                     className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                                     onClick={closeModal}
                                 >
-                                    {close}
+                                    {cancel}
                                 </button>
                             </div>
                         </div>
