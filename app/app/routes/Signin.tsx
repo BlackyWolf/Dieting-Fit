@@ -1,11 +1,12 @@
 import { ActionFunction, Form, Link, redirect, useActionData, useTransition } from 'remix';
 import { Logo } from '~/ui';
-// Photo by Trang Doan from Pexels: https://www.pexels.com/photo/assorted-sliced-fruits-1128678/
-import backgroundImage from '~/images/pexels-trang-doan-1128678.jpg';
 import { authenticateUserAsync, buildSignInUserData, createUserSession, validateSignInUserFormAsync } from '~/data/user';
-import { badRequest, internalServerError } from '~/data/responses.server';
+import { badRequest } from '~/data/responses.server';
 import { SignInUserData } from '~/data/user/SignInUserData';
 import { FormModel } from '~/data/form';
+
+// Photo by Trang Doan from Pexels: https://www.pexels.com/photo/assorted-sliced-fruits-1128678/
+import backgroundImage from '~/images/pexels-trang-doan-1128678.jpg';
 
 export const action: ActionFunction = async ({ request }) => {
     const form = await request.formData();
