@@ -40,7 +40,7 @@ export function buildCreateUserData(form: FormData): CreateUserData {
 
 export function buildSignInUserData(form: FormData): SignInUserData {
     const password = form.get('password')?.toString() || '';
-    const rememberMe = form.get('remember-me')?.valueOf() == true;
+    const rememberMe = form.get('remember-me')?.valueOf() === 'true';
     const username = form.get('username')?.toString() || '';
 
     return {
@@ -134,9 +134,9 @@ export async function signIn() {
 export async function signOut(request: Request) {
     const cookie = request.headers.get('Cookie');
 
-    if (!cookie) return;
+    if (!cookie) return '';
 
-    destroySession(cookie);
+    return destroySession(cookie);
 }
 
 export async function registerUserAsync({ email, password, username }: CreateUserData): Promise<User> {

@@ -37,9 +37,9 @@ function getStorage(rememberMe: boolean = false) {
     return rememberMe ? longTermStorage : shortTermStorage;
 }
 
-
 export async function createUserSession(userId: string, rememberMe: boolean = false): Promise<string> {
     const storage = getStorage(rememberMe);
+
     const session = await storage.getSession();
 
     session.set(userSessionKey, userId);
@@ -49,13 +49,15 @@ export async function createUserSession(userId: string, rememberMe: boolean = fa
 
 export async function destroySession(cookie: string) {
     const storage = getStorage();
+
     const session = await storage.getSession(cookie);
 
-    await storage.destroySession(session);
+    return await storage.destroySession(session);
 }
 
 export async function getUserSession(cookie: string) {
     const storage = getStorage();
+
     const session = await storage.getSession(cookie);
 
     const userId = session.get(userSessionKey);

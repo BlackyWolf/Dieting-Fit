@@ -3,9 +3,13 @@ import { signOut } from '~/data/user';
 import { Logo } from '~/ui';
 
 export const action: ActionFunction = async ({ request }) => {
-    await signOut(request);
+    const cookie = await signOut(request);
 
-    return redirect('/signin');
+    return redirect('/signin', {
+        headers: {
+            'Set-Cookie': cookie
+        }
+    });
 };
 
 export default function SignOut() {
