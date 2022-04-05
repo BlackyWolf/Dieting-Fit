@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["cockroachdb"]
+}
+
+datasource db {
+    provider = "cockroachdb"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id              String          @id(map: "primary") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    createdAt       DateTime?       @default(now()) @db.Timestamptz(6)
+    email           String          @unique
+    passwordHash    String
+    profile         UserProfile?
+    updatedAt       DateTime?       @updatedAt @db.Timestamptz(6)
+    username        String          @unique
+}
+
+model UserProfile {
+    id              Int             @id(map: "primary") @default(autoincrement())
+    about           String?
+    birthday        DateTime?       @db.Timestamptz(6)
+    displayName     String?
+    firstName       String?
+    imageUrl        String          @default("https://www.gravatar.com/avatar")
+    lastName        String?
+    phone           String?
+    private         Boolean         @default(true)
+    updatedAt       DateTime?       @updatedAt @db.Timestamptz(6)
+    user            User            @relation(fields: [userId], references: [id], map: "fk_COLUMN_ref_TABLE", onDelete: Cascade)
+    userId          String          @db.Uuid
+}
