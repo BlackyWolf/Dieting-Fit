@@ -1,6 +1,6 @@
 import { ActionFunction, redirect, useNavigate } from 'remix';
 import { signOut } from '~/data/user';
-import { Logo } from '~/ui';
+import { Logo, PrimaryButton, SecondaryButton } from '~/ui';
 
 export const action: ActionFunction = async ({ request }) => {
     const cookie = await signOut(request);
@@ -33,20 +33,11 @@ export default function SignOut() {
                         </p>
 
                         <div className="flex space-x-4">
-                            <button
-                                type="submit"
-                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                Sign out
-                            </button>
+                            <PrimaryButton>Sign out</PrimaryButton>
 
-                            <button
-                                type="button"
-                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                onClick={() => navigate(-1)}
-                            >
+                            <SecondaryButton type="button" onClick={() => navigate(-1)}>
                                 Cancel
-                            </button>
+                            </SecondaryButton>
                         </div>
                     </form>
                 </div>
