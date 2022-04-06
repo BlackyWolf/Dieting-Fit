@@ -1,5 +1,5 @@
 import { ActionFunction, Form, Link, redirect, useActionData, useTransition } from 'remix';
-import { Logo } from '~/ui';
+import { Logo, PrimaryButton } from '~/ui';
 import { authenticateUserAsync, buildSignInUserData, createUserSession, validateSignInUserFormAsync } from '~/data/user';
 import { badRequest } from '~/data/responses.server';
 import { SignInUserData } from '~/data/user/SignInUserData';
@@ -39,6 +39,8 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Login() {
     const transition = useTransition();
     const action = useActionData();
+
+    const submitting = transition.state === 'submitting';
 
     return (
         <div className="min-h-full flex flex-grow">
@@ -121,7 +123,7 @@ export default function Login() {
 
                         <div className="mt-6">
                             <Form method="post">
-                                <fieldset disabled={transition.state === 'submitting'} className="space-y-6">
+                                <fieldset disabled={submitting} className="space-y-6">
                                     {action?.formError && (
                                         <p className="bg-red-100 border border-red-200 px-4 py-2 rounded-md">
                                             <small className="text-red-500 font-bold">{action?.formError}</small>
@@ -183,14 +185,9 @@ export default function Login() {
                                         </div>
                                     </div>
 
-                                    <div>
-                                        <button
-                                            type="submit"
-                                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                        >
-                                            Sign in
-                                        </button>
-                                    </div>
+                                    <PrimaryButton disabled={submitting}>
+                                        {submitting ? 'Signing in...' : 'Sign in'}
+                                    </PrimaryButton>
                                 </fieldset>
                             </Form>
                         </div>

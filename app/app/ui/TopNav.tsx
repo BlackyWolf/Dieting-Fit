@@ -11,6 +11,7 @@ import { Disclosure, Menu as HuiMenu, Transition } from '@headlessui/react';
 import { joinClasses } from '~/utilities';
 import { Logo } from './branding';
 import { useUser } from '~/providers';
+import { IconButton } from './buttons';
 
 interface UiLink {
     current?: boolean;
@@ -23,7 +24,8 @@ export const TopNav = () => {
 
     const navigation: UiLink[] = [
         { current: true, name: 'Home', to: '/' },
-        { current: false, name: 'About', to: '/about' }
+        { current: false, name: 'About', to: '/about' },
+        { current: false, name: 'UI', to: '/ui' }
     ];
 
     const userNavigation: UiLink[] = [
@@ -75,14 +77,11 @@ export const TopNav = () => {
                                 </Disclosure.Button>
                             </div>
                             <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
-                                <button
-                                    type="button"
-                                    className="flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                >
+                                <IconButton>
                                     <span className="sr-only">View notifications</span>
 
-                                    <FontAwesomeIcon icon={faBell} size="lg" className="text-gray-400" />
-                                </button>
+                                    <FontAwesomeIcon icon={faBell} size="lg" />
+                                </IconButton>
 
                                 <HuiMenu as="div" className="flex-shrink-0 relative ml-4">
                                     <div>
@@ -165,14 +164,12 @@ export const TopNav = () => {
                                 <div className="ml-3">
                                     <div className="text-base font-medium text-gray-800">{user.username}</div>
                                 </div>
-                                <button
-                                    type="button"
-                                    className="ml-auto flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                >
+
+                                <IconButton className="ml-auto">
                                     <span className="sr-only">View notifications</span>
 
-                                    <FontAwesomeIcon icon={faBell} size="lg" className="text-gray-400" />
-                                </button>
+                                    <FontAwesomeIcon icon={faBell} size="lg" />
+                                </IconButton>
                             </div>
                             <div className="mt-3 px-2 space-y-1">
                                 {userNavigation.map(({ name, to }) => (

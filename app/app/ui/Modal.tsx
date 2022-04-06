@@ -1,5 +1,6 @@
 import { Fragment, PropsWithChildren, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { PrimaryButton, SecondaryButton } from './buttons';
 
 type VoidFunction = () => void;
 type VoidPromise = () => Promise<void>;
@@ -97,22 +98,14 @@ export const Modal = ({
 
                             <div className="mt-4">
                                 {onConfirm && (
-                                    <button
-                                        type="button"
-                                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                                        onClick={confirmModal}
-                                    >
+                                    <PrimaryButton type="button" onClick={confirmModal}>
                                         {confirm}
-                                    </button>
+                                    </PrimaryButton>
                                 )}
 
-                                <button
-                                    type="button"
-                                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                                    onClick={closeModal}
-                                >
+                                <SecondaryButton type="button" onClick={closeModal}>
                                     {cancel}
-                                </button>
+                                </SecondaryButton>
                             </div>
                         </div>
                     </Transition.Child>
