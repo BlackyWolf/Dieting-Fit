@@ -24,7 +24,8 @@ export const TopNav = () => {
 
     const navigation: UiLink[] = [
         { current: true, name: 'Home', to: '/' },
-        { current: false, name: 'About', to: '/about' }
+        { current: false, name: 'About', to: '/about' },
+        { current: false, name: 'UI', to: '/ui' }
     ];
 
     const userNavigation: UiLink[] = [
