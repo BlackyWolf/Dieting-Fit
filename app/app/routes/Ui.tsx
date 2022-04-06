@@ -1,13 +1,11 @@
-import { Button, Container, PrimaryButton, SecondaryButton } from '~/ui';
+import { Button, Container, Heading, PrimaryButton, SecondaryButton } from '~/ui';
 
 export default function Ui() {
     return (
         <Container>
-            <h1 className="text-6xl font-medium">UI</h1>
+            <Heading size="1" divider>UI</Heading>
 
-            <hr className="my-4" />
-
-            <h3 className="text-4xl font-medium mb-4">Buttons</h3>
+            <Heading size="3" margin="mb-4">Buttons</Heading>
 
             <div className="space-y-4">
                 <Button>Default</Button>
@@ -24,6 +22,17 @@ export default function Ui() {
                 <Button full={false} roundness="lg">Large Rounded</Button>
                 <Button full={false} roundness="pill">Pill/Fully Rounded</Button>
             </div>
+
+            <Heading size="3" margin="my-4">Headings</Heading>
+
+            <Heading size="5" divider>With divider</Heading>
+
+            <Heading size="1">h1</Heading>
+            <Heading size="2">h2</Heading>
+            <Heading size="3">h3</Heading>
+            <Heading size="4">h4</Heading>
+            <Heading size="5">h5</Heading>
+            <Heading size="6">h6</Heading>
         </Container>
     );
 }
