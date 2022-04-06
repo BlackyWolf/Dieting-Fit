@@ -1,7 +1,7 @@
 import { MouseEventHandler, PropsWithChildren } from 'react';
 import { joinClasses } from '~/utilities';
 
-type Color = 'gray' | 'sky';
+type Color = 'gray' | 'sky' | 'transparent';
 type Roundness = 'sm' | 'md' | 'lg' | 'pill';
 type Size = 'sm' | 'md' | 'lg';
 
@@ -15,11 +15,20 @@ function getColor(color: Color, disabled: boolean) {
                 ? 'bg-gray-300 text-white'
                 : 'bg-gray-500 text-white hover:bg-gray-600 focus:ring-gray-400';
             break;
-        default:
+        case 'sky':
             classes = 'text-white ';
             classes += disabled
                 ? 'bg-sky-300 text-white'
                 : 'bg-sky-500 text-white hover:bg-sky-600 focus:ring-sky-400';
+            break;
+        case 'transparent':
+            classes = '';
+            classes += disabled
+                ? ''
+                : 'focus:ring-gray-400';
+            break;
+        default:
+            classes = getColor('sky', false);
             break;
     }
 
@@ -60,6 +69,7 @@ function getSize(size: Size) {
 }
 
 export type ButtonProperties = PropsWithChildren<{
+    className?: string;
     color?: Color;
     disabled?: boolean;
     full?: boolean;
@@ -71,6 +81,7 @@ export type ButtonProperties = PropsWithChildren<{
 
 export const Button = ({
     children,
+    className,
     color = 'sky',
     disabled = false,
     full = true,
@@ -85,7 +96,8 @@ export const Button = ({
         getColor(color, disabled),
         getFullness(full),
         getRoundness(roundness),
-        getSize(size)
+        getSize(size),
+        className
     );
 
     return (

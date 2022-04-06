@@ -2,7 +2,7 @@ import { Form, Link, redirect, useActionData, useTransition } from 'remix';
 import type { ActionFunction } from 'remix';
 import { badRequest, internalServerError } from '~/data/responses.server';
 import { buildCreateUserData, createUserSession, registerUserAsync, validateRegisterUserFormAsync } from '~/data/user';
-import { Logo } from '~/ui';
+import { Logo, PrimaryButton } from '~/ui';
 
 // Photo by Burst from Pexels
 import backgroundImage from '~/images/pexels-burst-374052.jpg';
@@ -33,6 +33,8 @@ export default function Login() {
     const transition = useTransition();
     const action = useActionData();
 
+    const submitting = transition.state === 'submitting';
+
     return (
         <div className="min-h-full flex flex-grow">
             <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
@@ -53,7 +55,7 @@ export default function Login() {
                     <div className="mt-8">
                         <div className="mt-6">
                             <Form method="post">
-                                <fieldset disabled={transition.state === 'submitting'} className="space-y-6">
+                                <fieldset disabled={submitting} className="space-y-6">
                                     {action?.formError && (
                                         <p className="bg-red-100 border border-red-200 px-4 py-2 rounded-md">
                                             <small className="text-red-500 font-bold">{action?.formError}</small>
@@ -108,13 +110,9 @@ export default function Login() {
                                         <p><small className="text-red-500 font-bold">{action?.fieldErrors?.password}</small></p>
                                     </div>
 
-                                    <button
-                                        type="submit"
-                                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                        disabled={transition.state === 'submitting'}
-                                    >
-                                        {transition.state === 'submitting' ? 'Submitting...' : 'Register'}
-                                    </button>
+                                    <PrimaryButton disabled={submitting}>
+                                        {submitting ? 'Submitting...' : 'Register'}
+                                    </PrimaryButton>
                                 </fieldset>
                             </Form>
                         </div>
