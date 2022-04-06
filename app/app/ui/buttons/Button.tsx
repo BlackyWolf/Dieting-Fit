@@ -41,33 +41,21 @@ function getFullness(full: boolean) {
 
 function getRoundness(roundness: Roundness) {
     switch (roundness) {
-        case 'sm':
-            return 'rounded';
+        case 'sm': return 'rounded';
+        case 'md': return 'rounded-md';
+        case 'lg': return 'rounded-lg';
+        case 'pill': return 'rounded-full';
 
-        case 'md':
-            return 'rounded-md';
-
-        case 'lg':
-            return 'rounded-lg';
-
-        case 'pill':
-            return 'rounded-full';
-
-        default:
-            return '';
+        default: return '';
     }
 }
 
 function getSize(size: Size) {
     switch (size) {
-        case 'sm':
-            return 'px-2 py-1 text-sm';
+        case 'sm': return 'px-2 py-1 text-sm';
+        case 'lg': return 'px-6 py-3';
 
-        case 'lg':
-            return 'px-6 py-3';
-
-        default:
-            return 'px-4 py-2 text-sm';
+        default: return 'px-4 py-2 text-sm';
     }
 }
 
