@@ -2,7 +2,7 @@ import { MouseEventHandler, PropsWithChildren } from 'react';
 import { joinClasses } from '~/utilities';
 
 type Color = 'gray' | 'sky' | 'transparent';
-type Roundness = 'sm' | 'md' | 'lg' | 'pill';
+type Roundness = 'sm' | 'md' | 'lg' | 'pill' | 'none';
 type Size = 'sm' | 'md' | 'lg';
 
 function getColor(color: Color, disabled: boolean) {
@@ -44,6 +44,9 @@ function getRoundness(roundness: Roundness) {
         case 'sm':
             return 'rounded';
 
+        case 'md':
+            return 'rounded-md';
+
         case 'lg':
             return 'rounded-lg';
 
@@ -51,7 +54,7 @@ function getRoundness(roundness: Roundness) {
             return 'rounded-full';
 
         default:
-            return 'rounded-md';
+            return '';
     }
 }
 
