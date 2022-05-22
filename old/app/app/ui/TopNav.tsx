@@ -15,6 +15,7 @@ import { joinClasses } from '~/utilities';
 import { Logo } from './branding';
 import { useUser } from '~/providers';
 import { IconButton } from './buttons';
+import { Container } from './Container';
 
 interface UiLink {
     current?: boolean;
@@ -27,7 +28,9 @@ export const TopNav = () => {
     const [user] = useUser();
 
     const navigation: UiLink[] = [
-        { current: true, name: 'Home', to: '/' },
+        { current: false, name: 'Dashboard', to: '/' },
+        { current: false, name: 'Schedule', to: '/schedule' },
+        { current: false, name: 'Groceries', to: '/groceries' },
         { current: false, name: 'About', to: '/about' },
         { current: false, name: 'UI', to: '/ui' }
     ];
@@ -40,8 +43,8 @@ export const TopNav = () => {
     return (
         <Disclosure as="header" className="bg-white shadow">
             {({ open }) => (
-                <>
-                    <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
+                <Container padding="py-0">
+                    <div className="lg:divide-y lg:divide-gray-200">
                         <div className="relative h-16 flex justify-between">
                             <div className="relative z-10 px-2 flex lg:px-0">
                                 <Link to="/" className="flex-shrink flex items-center">
@@ -201,7 +204,7 @@ export const TopNav = () => {
                             </div>
                         </div>
                     </Disclosure.Panel>
-                </>
+                </Container>
             )}
         </Disclosure>
     );
