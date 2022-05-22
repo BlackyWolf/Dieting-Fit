@@ -2,19 +2,24 @@ import { Fragment } from 'react';
 import { Link } from 'remix';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+    faArrowRightFromBracket,
     faBars,
     faBell,
+    faCog,
     faMagnifyingGlass,
-    faTimes
+    faTimes,
+    IconDefinition
 } from '@fortawesome/pro-duotone-svg-icons';
 import { Disclosure, Menu as HuiMenu, Transition } from '@headlessui/react';
 import { joinClasses } from '~/utilities';
 import { Logo } from './branding';
 import { useUser } from '~/providers';
 import { IconButton } from './buttons';
+import { Container } from './Container';
 
 interface UiLink {
     current?: boolean;
+    icon?: IconDefinition;
     name: string;
     to: string;
 }
@@ -23,20 +28,23 @@ export const TopNav = () => {
     const [user] = useUser();
 
     const navigation: UiLink[] = [
-        { current: true, name: 'Home', to: '/' },
+        { current: false, name: 'Dashboard', to: '/' },
+        { current: false, name: 'Schedule', to: '/schedule' },
+        { current: false, name: 'Groceries', to: '/groceries' },
         { current: false, name: 'About', to: '/about' },
         { current: false, name: 'UI', to: '/ui' }
     ];
 
     const userNavigation: UiLink[] = [
-        { name: 'Sign out', to: '/signout' }
+        { name: 'Settings', to: '/settings/profile', icon: faCog },
+        { name: 'Sign out', to: '/signout', icon: faArrowRightFromBracket }
     ];
 
     return (
         <Disclosure as="header" className="bg-white shadow">
             {({ open }) => (
-                <>
-                    <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
+                <Container padding="py-0">
+                    <div className="lg:divide-y lg:divide-gray-200">
                         <div className="relative h-16 flex justify-between">
                             <div className="relative z-10 px-2 flex lg:px-0">
                                 <Link to="/" className="flex-shrink flex items-center">
@@ -57,7 +65,7 @@ export const TopNav = () => {
                                         <input
                                             id="search"
                                             name="search"
-                                            className="block w-full bg-white border border-gray-300 rounded-md py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            className="block w-full bg-white border border-gray-300 rounded-md py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-sky-400 focus:border-sky-400 sm:text-sm"
                                             placeholder="Search"
                                             type="search"
                                         />
@@ -66,7 +74,9 @@ export const TopNav = () => {
                             </div>
                             <div className="relative z-10 flex items-center lg:hidden">
                                 {/* Mobile menu button */}
-                                <Disclosure.Button className="rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                                <Disclosure.Button
+                                    className="rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-400"
+                                >
                                     <span className="sr-only">Open menu</span>
 
                                     {open ? (
@@ -85,7 +95,7 @@ export const TopNav = () => {
 
                                 <HuiMenu as="div" className="flex-shrink-0 relative ml-4">
                                     <div>
-                                        <HuiMenu.Button className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                        <HuiMenu.Button className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400">
                                             <span className="sr-only">Open user menu</span>
 
                                             <img className="h-12 w-12 rounded-full" src={user.imageUrl} alt="" />
@@ -102,16 +112,20 @@ export const TopNav = () => {
                                         leaveTo="transform opacity-0 scale-95"
                                     >
                                         <HuiMenu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
-                                            {userNavigation.map(({ name, to }) => (
+                                            {userNavigation.map(({ icon, name, to }) => (
                                                 <HuiMenu.Item key={name}>
                                                     {({ active }) => (
                                                         <Link
                                                             to={to}
                                                             className={joinClasses(
                                                                 active ? 'bg-gray-100' : '',
-                                                                'block py-2 px-4 text-sm text-gray-700'
+                                                                'flex items-center block py-2 px-4 text-sm text-gray-700'
                                                             )}
                                                         >
+                                                            {icon && (
+                                                                <FontAwesomeIcon icon={icon} size="lg" fixedWidth className="mr-2" />
+                                                            )}
+
                                                             {name}
                                                         </Link>
                                                     )}
@@ -171,21 +185,26 @@ export const TopNav = () => {
                                     <FontAwesomeIcon icon={faBell} size="lg" />
                                 </IconButton>
                             </div>
+
                             <div className="mt-3 px-2 space-y-1">
-                                {userNavigation.map(({ name, to }) => (
+                                {userNavigation.map(({ icon, name, to }) => (
                                     <Disclosure.Button
                                         key={name}
                                         as={Link}
                                         to={to}
-                                        className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                                        className="block flex items-center rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                                     >
+                                        {icon && (
+                                            <FontAwesomeIcon icon={icon} size="lg" fixedWidth className="mr-2" />
+                                        )}
+
                                         {name}
                                     </Disclosure.Button>
                                 ))}
                             </div>
                         </div>
                     </Disclosure.Panel>
-                </>
+                </Container>
             )}
         </Disclosure>
     );

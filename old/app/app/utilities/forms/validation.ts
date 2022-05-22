@@ -55,7 +55,7 @@ export function validatePassword(password: string, strengthCheck = true): string
     if (strengthCheck) {
         const strength = passwordStrength(password, passwordStrengthOptions);
 
-        if (strength.id < 2) return 'Your password is too weak.';
+        if (strength.id < 2) return 'Your password is too weak. Try using more numbers, special characters, upper- and lowercase, and making it longer.';
     }
 }
 
