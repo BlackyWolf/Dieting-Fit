@@ -22,6 +22,8 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@azure/msal-browser": "^2.25.0",
+        "@azure/msal-react": "^1.4.1",
         "@fortawesome/fontawesome-svg-core": "^6.1.1",
         "@fortawesome/pro-duotone-svg-icons": "^6.1.1",
         "@fortawesome/pro-light-svg-icons": "^6.1.1",
