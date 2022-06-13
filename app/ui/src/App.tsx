@@ -1,6 +1,7 @@
 import { AuthenticatedTemplate, MsalProvider, UnauthenticatedTemplate } from '@azure/msal-react';
 import { BrowserRouter } from 'react-router-dom';
 import { msalClient } from './auth';
+import { SignIn } from './pages/SignIn';
 
 export const App = () => {
     return (
@@ -11,7 +12,7 @@ export const App = () => {
                 </BrowserRouter>
             </AuthenticatedTemplate>
             <UnauthenticatedTemplate>
-                <h1>Argh</h1>
+                <SignIn />
             </UnauthenticatedTemplate>
         </MsalProvider>
     );
