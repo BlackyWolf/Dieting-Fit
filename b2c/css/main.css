@@ -58,6 +58,18 @@ input[type=password] {
     @apply ml-2 bg-transparent border-gray-300 text-gray-800;
 }
 
+.buttons .sendNewCode {
+    @apply ml-2 bg-green-500 hover:bg-green-600 focus:ring-green-400;
+}
+
+.buttons.verify {
+    flex-direction: column;
+}
+
+.buttons.verify button {
+    @apply mt-4;
+}
+
 .password-label {
     @apply mt-4 flex items-center;
 }
@@ -90,4 +102,14 @@ input[type=password] {
     @apply text-sm mt-2 mb-4 block text-blue-500 hover:text-blue-400 transition-all duration-150;
 }
 
+.error {
+    @apply text-red-500 font-semibold text-sm mb-1;
+}
 
+.verificationSuccessText {
+    @apply text-sm font-semibold text-green-500;
+}
+
+#attributeList {
+    @apply mb-4;
+}
