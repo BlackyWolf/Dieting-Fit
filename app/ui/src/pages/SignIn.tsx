@@ -12,7 +12,7 @@ export const SignIn = () => {
 
     return (
         <>
-            <h1>Redirecting...</h1>
+            <h1 className="text-4xl">Redirecting...</h1>
 
             <button onClick={signIn}>Login</button>
         </>
