@@ -25,7 +25,7 @@ export default function FoodsPage({ data }: PageProps<Food[]>) {
             <div class={tw`flex items-center`}>
                 <Heading size="1">Foods</Heading>
 
-                <a href="/foods/add" class={tw`ml-4 bg-green-500 px-2 py-1 text-sm font-semibold text-white rounded-md`}>Add</a>
+                <a href="/foods/add" class={tw`ml-auto bg-green-500 px-4 py-2 text-sm font-semibold text-white rounded-md`}>Add</a>
             </div>
 
             <hr class={tw`my-6`} />
