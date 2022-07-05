@@ -10,11 +10,11 @@ interface Properties {
     title?: string;
 }
 
-export default function MainLayout({ children, title = "DietingFit" }: Properties) {
+export default function MainLayout({ children, title = "" }: Properties) {
     return (
         <Fragment>
             <Head>
-                <title>{title}</title>
+                <title>{title ? title + " - " : "" }DietingFit</title>
             </Head>
 
             <NavBar />
