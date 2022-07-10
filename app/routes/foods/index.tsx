@@ -1,15 +1,17 @@
 /** @jsx h */
 import { h } from "preact";
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { tw } from '@twind';
-import { Food } from "@models/foods/Food.ts";
-import { getFoods } from "@data/foods/getFoods.ts";
-import { Heading } from "@components/typography/Heading.tsx";
-import MainLayout from "@components/templates/MainLayout.tsx";
+import { tw } from "@twind";
+import { Food } from "@models/index.ts";
+import { getFoods } from "@data/index.ts";
+import { Heading, MainLayout } from "@components/index.ts";
 
 export const handler: Handlers<Food[]> = {
-    async GET(_, context) {
-        const { skip, take } = context.params;
+    async GET(request, context) {
+        const url = new URL(request.url);
+
+        const skip = url.searchParams.get("skip") || 0;
+        const take = url.searchParams.get("take") || 20;
 
         const foods = await getFoods(+skip, +take);
 
@@ -25,7 +27,10 @@ export default function FoodsPage({ data }: PageProps<Food[]>) {
             <div class={tw`flex items-center`}>
                 <Heading size="1">Foods</Heading>
 
-                <a href="/foods/add" class={tw`ml-auto bg-green-500 px-4 py-2 text-sm font-semibold text-white rounded-md`}>Add</a>
+                <a href="/foods/add" class={tw`ml-auto text-green-500 text-lg font-semibold flex items-center hover:text-green-400 transition duration-150`}>
+                    <i class={tw`fa-duotone fa-plus fa-lg mr-2`}></i>
+                    Add new food
+                </a>
             </div>
 
             <hr class={tw`my-6`} />
@@ -39,7 +44,7 @@ export default function FoodsPage({ data }: PageProps<Food[]>) {
             )}
 
             {(!data || data.length < 1) && (
-                <p>There's no food D:</p>
+                <p>There"s no food D:</p>
             )}
         </MainLayout>
     );
