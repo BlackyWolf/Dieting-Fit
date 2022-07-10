@@ -1,4 +1,4 @@
-import { NutritionFacts } from "../nutrition.ts/Nutrition.ts";
+import { NutritionFacts } from "../nutrition/index.ts";
 
 export interface Food {
     id: string;

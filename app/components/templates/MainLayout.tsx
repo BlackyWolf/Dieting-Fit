@@ -10,11 +10,13 @@ interface Properties {
     title?: string;
 }
 
-export default function MainLayout({ children, title = "" }: Properties) {
+export const MainLayout = ({ children, title = "" }: Properties) => {
     return (
         <Fragment>
             <Head>
                 <title>{title ? title + " - " : "" }DietingFit</title>
+
+                <script src="https://kit.fontawesome.com/f6341e5993.js" crossOrigin="anonymous"></script>
             </Head>
 
             <NavBar />

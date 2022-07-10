@@ -1,6 +1,6 @@
 /** @jsx h */
 import { h } from "preact";
-import MainLayout from "@components/templates/MainLayout.tsx";
+import { MainLayout } from "@components/index.ts";
 
 export default function Home() {
     return (

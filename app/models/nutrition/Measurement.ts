@@ -1,4 +1,4 @@
 export interface Measurement {
-    abbreviation: string;
     name: string;
+    symbol: string;
 }

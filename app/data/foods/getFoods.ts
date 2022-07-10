@@ -1,4 +1,4 @@
-import { Food } from "@models/foods/Food.ts";
+import { Food } from "@models/index.ts";
 import { useCollection } from "../useCollection.ts";
 
 export async function getFoods(skip = 0, take = 20) {
