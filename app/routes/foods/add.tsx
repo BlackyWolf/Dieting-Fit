@@ -18,8 +18,6 @@ export const handler: Handlers<Food> = {
 };
 
 export default function AddFood({ data }: PageProps<Food>) {
-    console.log(JSON.stringify(data, null, 4));
-
     return (
         <MainLayout>
             <Heading size="1">Add Food</Heading>
