@@ -1,12 +1,16 @@
 /**
- * Represents a measurement for an ingredient or recipe.
+ * A type of measurement used for ingredients, recipes, and nutritional facts.
  */
-export interface Measurement {
+export interface MeasurementType {
     /**
-     * The numeric amount of the measurement. This must be a number for
-     * calculation purposes.
+     * The primary identifier.
      */
-    amount: number;
+    id: string;
+
+    /**
+     * A brief description of the purpose and use of the measurement type.
+     */
+    description: string;
 
     /**
      * The true name of the measurement type, e.g. grams, cups, egg, teaspoon,
