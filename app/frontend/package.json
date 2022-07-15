@@ -1,0 +1,11 @@
+{
+  "name": "dieting-fit-frontend",
+  "version": "0.1.0",
+  "description": "The frontend UI for the DietingFit user application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
