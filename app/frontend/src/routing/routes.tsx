@@ -18,9 +18,9 @@ interface NavLink {
 }
 
 export const appRoutes: AppRoute[] = [
-    { path: '/', element: <Home /> }
+    { path: '/', element: <Dashboard /> }
 ];
 
 export const navigation: NavLink[] = [
-    { icon: faHouse, name: 'Home', to: '/' }
+    { icon: faHouse, name: 'Dashboard', to: '/' }
 ];

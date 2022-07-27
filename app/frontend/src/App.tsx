@@ -1,13 +1,20 @@
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react';
 import { BrowserRouter } from 'react-router-dom';
-import { MainLayout } from './components/MainLayout';
 import { AppRoutes } from './routing';
 
 export const App = () => {
+    const { instance } = useMsal();
+
     return (
-        <BrowserRouter>
-            <MainLayout>
-                <AppRoutes />
-            </MainLayout>
-        </BrowserRouter>
+        <>
+            <AuthenticatedTemplate>
+                <BrowserRouter>
+                    <AppRoutes />
+                </BrowserRouter>
+            </AuthenticatedTemplate>
+            <UnauthenticatedTemplate>
+                <button onClick={() => instance.loginRedirect()}>Login</button>
+            </UnauthenticatedTemplate>
+        </>
     );
 }
