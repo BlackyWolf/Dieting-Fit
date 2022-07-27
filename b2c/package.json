@@ -1,0 +1,14 @@
+{
+    "name": "auth-b2c-custom-ui",
+    "version": "0.0.1",
+    "description": "The custom UI for the login page in Azure AD B2C",
+    "author": "Blacky Wolf",
+    "license": "MIT",
+    "scripts": {
+        "build": "tailwindcss -i ./css/main.css -m -o ./dist/styles.min.css",
+        "watch": "tailwindcss -i ./css/main.css -o ./dist/styles.css --watch"
+    },
+    "devDependencies": {
+        "tailwindcss": "^3.1.2"
+    }
+}
