@@ -1,6 +1,12 @@
 import { Configuration, PublicClientApplication } from '@azure/msal-browser';
-import { B2C_AUTHORITY, B2C_POLICY, B2C_CLIENT_ID, B2C_TENANT_ID } from '@/variables';
-import { B2C_POST_LOGOUT_REDIRECT_URI, B2C_REDIRECT_URI } from '../variables';
+import {
+    B2C_AUTHORITY,
+    B2C_POLICY,
+    B2C_CLIENT_ID,
+    B2C_POST_LOGOUT_REDIRECT_URI,
+    B2C_REDIRECT_URI,
+    B2C_TENANT_ID
+} from '@/variables';
 
 const configuration: Configuration = {
     auth: {
@@ -13,3 +19,9 @@ const configuration: Configuration = {
 };
 
 export const msal = new PublicClientApplication(configuration);
+
+export const scopes = [
+    'openid',
+    'profile',
+    'email'
+];
