@@ -18,8 +18,14 @@ const configuration: Configuration = {
     }
 };
 
+/**
+ * The client configured to use with Azure AD B2C.
+ */
 export const msal = new PublicClientApplication(configuration);
 
+/**
+ * Default scopes to use for login.
+ */
 export const scopes = [
     'openid',
     'profile',

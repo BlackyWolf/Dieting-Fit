@@ -3,6 +3,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { scopes } from './auth';
 import { AppRoutes } from './routing';
 
+/**
+ * The starting component for building out the UI of the application.
+ */
 export const App = () => {
     const { accounts, instance } = useMsal();
 

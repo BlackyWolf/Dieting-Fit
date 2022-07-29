@@ -1,6 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import { appRoutes } from './routes';
 
+/**
+ * Builds the mapping of component pages to React Router routes for navigation.
+ */
 export const AppRoutes = () => {
     return (
         <Routes>
