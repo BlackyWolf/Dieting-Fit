@@ -1,17 +1,27 @@
+import { MainLayout } from '../components';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faHouse } from '@fortawesome/pro-duotone-svg-icons';
+import { faHouse, faIdCard } from '@fortawesome/pro-duotone-svg-icons';
 import { ReactElement } from 'react';
+import { Navigate } from 'react-router-dom';
 
 import {
     Dashboard
 } from '../pages';
 
-interface AppRoute {
+/**
+ * Represents a displayable component navigable from the URI.
+ */
+export interface AppRoute {
+    children?: AppRoute[];
     element: ReactElement;
-    path: string;
+    index?: boolean;
+    path?: string;
 }
 
-interface NavLink {
+/**
+ * Represents a navigable link.
+ */
+export interface NavLink {
     icon: IconDefinition;
     name: string;
     to: string;
@@ -21,7 +31,11 @@ interface NavLink {
  * An array of items used to build the React Router routes.
  */
 export const appRoutes: AppRoute[] = [
-    { path: '/', element: <Dashboard /> }
+    { path: '/', element: <MainLayout />, children: [
+        { path: 'dashboard', element: <Dashboard /> },
+        { path: '*', element: <Navigate to='/dashboard' replace /> }
+    ] }
+
 ];
 
 /**
@@ -29,4 +43,8 @@ export const appRoutes: AppRoute[] = [
  */
 export const navigation: NavLink[] = [
     { icon: faHouse, name: 'Dashboard', to: '/' }
+];
+
+export const userMenu: NavLink[] = [
+    { icon: faIdCard, name: 'Profile', to: '/user/profile' }
 ];
