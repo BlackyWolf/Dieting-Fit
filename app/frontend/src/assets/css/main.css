@@ -9,10 +9,12 @@
 }
 
 html,
-body {
+body,
+#root {
     @apply flex flex-col min-h-full;
 }
 
-body {
+body,
+#root {
     flex-grow: 1;
 }
