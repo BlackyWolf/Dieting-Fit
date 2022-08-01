@@ -1,25 +1,24 @@
+import { navigation, userMenu } from '@/routing';
+import { joinClasses } from '@/utilities';
 import { useMsal } from '@azure/msal-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faArrowRightFromBracket,
     faBars,
     faBell,
-    faCog,
+    faCircleUser,
     faMagnifyingGlass,
-    faTimes,
-    IconDefinition
+    faRightFromBracket,
+    faTimes
 } from '@fortawesome/pro-duotone-svg-icons';
-import { Disclosure, Menu as HuiMenu, Transition } from '@headlessui/react';
+import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { navigation, userMenu } from '../../routing';
-import { joinClasses } from '../../utilities';
 import { Logo } from '../branding';
 import { Button } from '../buttons';
 import { Container } from '../layouts';
 
-export const TopNav = () => {
-    const { accounts } = useMsal();
+export const NavBar = () => {
+    const { accounts, instance } = useMsal();
 
     let user = {
         imageUrl: '',
@@ -79,19 +78,25 @@ export const TopNav = () => {
                                 </Disclosure.Button>
                             </div>
                             <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
-                                <Button color="transparent">
+                                <Button color="transparent" roundness="pill" size="sm">
                                     <span className="sr-only">View notifications</span>
 
                                     <FontAwesomeIcon icon={faBell} size="lg" />
                                 </Button>
 
-                                <HuiMenu as="div" className="flex-shrink-0 relative ml-4">
+                                <Menu as="div" className="flex-shrink-0 relative ml-4">
                                     <div>
-                                        <HuiMenu.Button className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400">
+                                        <Menu.Button className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400">
                                             <span className="sr-only">Open user menu</span>
 
-                                            <img className="h-12 w-12 rounded-full" src={user.imageUrl} alt="" />
-                                        </HuiMenu.Button>
+                                            {user?.imageUrl && (
+                                                <img className="h-12 w-12 rounded-full" src={user.imageUrl} alt="" />
+                                            )}
+
+                                            {!user?.imageUrl && (
+                                                <FontAwesomeIcon icon={faCircleUser} size="2x" className="text-gray-500" />
+                                            )}
+                                        </Menu.Button>
                                     </div>
 
                                     <Transition
@@ -103,15 +108,15 @@ export const TopNav = () => {
                                         leaveFrom="transform opacity-100 scale-100"
                                         leaveTo="transform opacity-0 scale-95"
                                     >
-                                        <HuiMenu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
+                                        <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
                                             {userMenu.map(({ icon, name, to }) => (
-                                                <HuiMenu.Item key={name}>
+                                                <Menu.Item key={name}>
                                                     {({ active }) => (
                                                         <NavLink
                                                             to={to}
                                                             className={joinClasses(
                                                                 active ? 'bg-gray-100' : '',
-                                                                'flex items-center block py-2 px-4 text-sm text-gray-700'
+                                                                'flex items-center block py-2 px-4 text-gray-700'
                                                             )}
                                                         >
                                                             {icon && (
@@ -121,11 +126,29 @@ export const TopNav = () => {
                                                             {name}
                                                         </NavLink>
                                                     )}
-                                                </HuiMenu.Item>
+                                                </Menu.Item>
                                             ))}
-                                        </HuiMenu.Items>
+
+                                            <Menu.Item>
+                                                {({ active }) => (
+                                                    <button
+                                                        type="button"
+                                                        className={joinClasses(
+                                                            active ? 'bg-gray-100' : '',
+                                                            'flex items-center block py-2 px-4 text-gray-700 w-full'
+                                                        )}
+                                                        onClick={() => instance.logoutRedirect()}
+                                                    >
+                                                        <FontAwesomeIcon icon={faRightFromBracket} size="lg" fixedWidth className="mr-2" />
+                                                        Sign out
+                                                    </button>
+                                                )}
+                                            </Menu.Item>
+
+                                            <hr />
+                                        </Menu.Items>
                                     </Transition>
-                                </HuiMenu>
+                                </Menu>
                             </div>
                         </div>
                         <nav className="hidden lg:py-2 lg:flex lg:space-x-8" aria-label="Global">
@@ -146,7 +169,7 @@ export const TopNav = () => {
 
                     <Disclosure.Panel as="nav" className="lg:hidden" aria-label="Global">
                         <div className="pt-2 pb-3 px-2 space-y-1">
-                            {navigation.map(({  name, to }) => (
+                            {navigation.map(({ name, to }) => (
                                 <Disclosure.Button
                                     key={name}
                                     as={NavLink}

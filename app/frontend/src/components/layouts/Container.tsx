@@ -1,4 +1,4 @@
-import { joinClasses } from '../../utilities';
+import { joinClasses } from '@/utilities';
 import { PropsWithChildren } from 'react';
 
 type Alignment = '' | 'center';

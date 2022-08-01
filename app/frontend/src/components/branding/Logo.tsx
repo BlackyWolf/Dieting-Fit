@@ -1,10 +1,11 @@
-import { joinClasses } from '../../utilities';
+import { joinClasses } from '@/utilities';
 import { faUserChef } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type LogoSize = 'sm' | 'md' | 'lg';
 
 interface Properties {
+    className?: string;
     resize?: boolean;
     size?: LogoSize;
 }
@@ -27,10 +28,11 @@ function getSizeClass(size: LogoSize, resize: boolean) {
  *
  * @param properties Used to configure the logo styling.
  */
-export const Logo = ({ resize = false, size = 'md' }: Properties) => {
+export const Logo = ({ className, resize = false, size = 'md' }: Properties) => {
     const classes = joinClasses(
         'font-nunito font-black uppercase text-neutral-500',
-        getSizeClass(size, resize)
+        getSizeClass(size, resize),
+        className
     );
 
     return (
