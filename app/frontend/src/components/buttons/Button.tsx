@@ -1,5 +1,5 @@
+import { joinClasses } from '@/utilities';
 import { MouseEventHandler, PropsWithChildren } from 'react';
-import { joinClasses } from '../../utilities';
 
 export type ButtonColor = 'primary' | 'secondary' | 'transparent';
 export type ButtonRoundness = 'sm' | 'md' | 'lg' | 'pill' | 'none';
@@ -7,19 +7,19 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
 
 function getButtonColor(color: ButtonColor, disabled: boolean, outline?: boolean) {
     if (disabled) {
-        return 'text-gray-400 focus:ring-gray-200 ' + outline
+        return 'text-gray-400 focus:ring-gray-200 ' + (outline
             ? 'border-gray-300'
-            : 'border-bg-300';
+            : 'border-bg-300');
     }
 
     switch (color) {
-        case 'primary': return 'focus:ring-blue-400 ' + outline
+        case 'primary': return 'focus:ring-blue-400 ' + (outline
             ? 'border-blue-500 text-blue-600'
-            : 'bg-blue-500 hover:bg-blue-600 text-white';
+            : 'bg-blue-500 hover:bg-blue-600 text-white');
 
-        case 'transparent': return 'focus:ring-slate-200 text-slate-400 ' + outline
+        case 'transparent': return 'focus:ring-slate-200 text-slate-500 ' + (outline
             ? 'border-slate-300'
-            : '';
+            : 'border-transparent');
 
         default: return;
     }
