@@ -1,13 +1,14 @@
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react';
-import { BrowserRouter } from 'react-router-dom';
-import { scopes } from './auth';
+import { useLocation } from 'react-router-dom';
+import { SignedOut, SignInRedirect } from './auth';
 import { AppRoutes } from './routing';
 
 /**
  * The starting component for building out the UI of the application.
  */
 export const App = () => {
-    const { accounts, instance } = useMsal();
+    const { accounts } = useMsal();
+    const location = useLocation();
 
     if (accounts.length > 0) {
         console.log(accounts[0]);
@@ -16,13 +17,16 @@ export const App = () => {
     return (
         <>
             <AuthenticatedTemplate>
-                <button className="bg-slate-500 text-white px-4 py-2 rounded-md" onClick={() => instance.logoutRedirect()}>Logout</button>
-                <BrowserRouter>
-                    <AppRoutes />
-                </BrowserRouter>
+                <AppRoutes />
             </AuthenticatedTemplate>
             <UnauthenticatedTemplate>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={() => instance.loginRedirect({ scopes })}>Login</button>
+                {location.pathname !== '/signedout' && (
+                    <SignInRedirect />
+                )}
+
+                {location.pathname === '/signedout' && (
+                    <SignedOut />
+                )}
             </UnauthenticatedTemplate>
         </>
     );
