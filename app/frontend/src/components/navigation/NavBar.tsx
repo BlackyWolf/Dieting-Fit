@@ -140,6 +140,7 @@ export const NavBar = () => {
                                                         onClick={() => instance.logoutRedirect()}
                                                     >
                                                         <FontAwesomeIcon icon={faRightFromBracket} size="lg" fixedWidth className="mr-2" />
+
                                                         Sign out
                                                     </button>
                                                 )}
@@ -152,7 +153,7 @@ export const NavBar = () => {
                             </div>
                         </div>
                         <nav className="hidden lg:py-2 lg:flex lg:space-x-8" aria-label="Global">
-                            {navigation.map(({ name, to }) => (
+                            {navigation.map(({ icon, name, to }) => (
                                 <NavLink
                                     key={name}
                                     to={to}
@@ -161,6 +162,10 @@ export const NavBar = () => {
                                         'rounded-md py-2 px-3 inline-flex items-center text-sm font-medium'
                                     )}
                                 >
+                                    {icon && (
+                                        <FontAwesomeIcon icon={icon} size="lg" fixedWidth className="mr-2" />
+                                    )}
+
                                     {name}
                                 </NavLink>
                             ))}
@@ -169,7 +174,7 @@ export const NavBar = () => {
 
                     <Disclosure.Panel as="nav" className="lg:hidden" aria-label="Global">
                         <div className="pt-2 pb-3 px-2 space-y-1">
-                            {navigation.map(({ name, to }) => (
+                            {navigation.map(({ icon, name, to }) => (
                                 <Disclosure.Button
                                     key={name}
                                     as={NavLink}
@@ -181,6 +186,10 @@ export const NavBar = () => {
                                         'block rounded-md py-2 px-3 text-base font-medium'
                                     )}
                                 >
+                                    {icon && (
+                                        <FontAwesomeIcon icon={icon} size="lg" fixedWidth className="mr-2" />
+                                    )}
+
                                     {name}
                                 </Disclosure.Button>
                             ))}
