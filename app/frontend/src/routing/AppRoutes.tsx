@@ -3,7 +3,8 @@ import { ReactElement } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
-    Dashboard
+    Dashboard,
+    Foods
 } from '../pages';
 
 /**
@@ -22,6 +23,7 @@ export interface AppRoute {
 export const appRoutes: AppRoute[] = [
     { path: '', element: <Navigate to='/dashboard' replace />, index: true },
     { path: 'dashboard', element: <Dashboard /> },
+    { path: 'foods', element: <Foods /> }
 ];
 
 function buildRoute({ children, element, index, path }: AppRoute) {
