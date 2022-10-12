@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: Properties) => {
 
     useEffect(() => {
         const unsubscribe = client.subscribe('account', (payload) => {
-            console.log(payload)
+            console.log(payload);
         });
 
         return unsubscribe;
