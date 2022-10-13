@@ -6,3 +6,4 @@ export * from './registerUser';
 export * from './sendEmailVerification';
 export * from './Unauthenticated';
 export * from './useIsAuthenticated';
+export * from './verifyEmail';

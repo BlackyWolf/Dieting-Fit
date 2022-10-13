@@ -1,5 +1,5 @@
 import { App } from '@/App';
-import { ErrorPage, Home, Login } from '@/pages';
+import { EmailSent, ErrorPage, Home, Login, Signup, VerifyEmail } from '@/pages';
 import { createBrowserRouter } from 'react-router-dom';
 
 export const router = createBrowserRouter([
@@ -17,5 +17,17 @@ export const router = createBrowserRouter([
     {
         path: 'login',
         element: <Login />
+    },
+    {
+        path: 'signup',
+        element: <Signup />
+    },
+    {
+        path: 'email-sent',
+        element: <EmailSent />
+    },
+    {
+        path: 'account/email/verification',
+        element: <VerifyEmail />
     }
 ]);

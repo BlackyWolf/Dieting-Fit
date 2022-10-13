@@ -15,11 +15,12 @@ const FormContext = createContext(defaultState);
 export const useForm = () => useContext(FormContext);
 
 type Properties = PropsWithChildren<{
+    className?: string;
     defaultValues?: any;
     onSubmit: SubmitHandler<any>;
 }>;
 
-export const Form = ({ children, defaultValues, onSubmit }: Properties) => {
+export const Form = ({ children, className, defaultValues, onSubmit }: Properties) => {
     const { handleSubmit, register } = useHookForm({ defaultValues });
 
     const state: FormState = {
@@ -28,7 +29,7 @@ export const Form = ({ children, defaultValues, onSubmit }: Properties) => {
 
     return (
         <FormContext.Provider value={state}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} className={className}>
                 {children}
             </form>
         </FormContext.Provider>

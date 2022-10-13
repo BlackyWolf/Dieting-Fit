@@ -61,7 +61,7 @@ export const UnauthenticatedNavbar = () => {
                                 <Button color="blue" link="/login" className="mr-4">
                                     Login
                                 </Button>
-                                <Button color="gray" link="/login">
+                                <Button color="gray" link="/signup">
                                     Signup
                                 </Button>
                             </div>
