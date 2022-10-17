@@ -1,7 +1,6 @@
 import { App } from '@/App';
 import { SettingsLayout } from '@/components';
 import {
-    EmailVerify,
     ErrorPage,
     Home,
     ProfileSettings,
@@ -29,10 +28,6 @@ export const router = createBrowserRouter([
                         element: <ProfileSettings />
                     }
                 ]
-            },
-            {
-                path: 'account/email/verify',
-                element: <EmailVerify />
             }
         ]
     },

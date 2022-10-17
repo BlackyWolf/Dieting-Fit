@@ -1,7 +1,8 @@
-import { useCreateUser } from "@/auth";
-import { Alert, Button, Form, Input, Logo } from "@/components";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useCreateUser, useSendEmailVerification } from '@/auth';
+import { Alert, Button, Form, Input, Logo } from '@/components';
+import { previousUriKey } from '@/data';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface FormData {
     email: string;
@@ -12,15 +13,30 @@ export const SignUp = () => {
     const [error, setError] = useState<string>();
     const navigate = useNavigate();
     const createUser = useCreateUser();
+    const sendEmailVerification = useSendEmailVerification();
 
     async function onSubmit({ email, password }: FormData) {
         if (email && password) {
-            const error = await createUser({ email, password });
+            const { error, user } = await createUser({ email, password });
 
             if (error) {
-                setError(error.message);
+                const { code, message } = error;
+
+                switch (code) {
+                    case 'auth/invalid-email':
+                        setError('The email you entered is invalid.');
+                        break;
+
+                    default:
+                        setError(message);
+                        break;
+                }
             } else {
-                navigate('/');
+                await sendEmailVerification({ user });
+
+                const previousUri = window.localStorage.getItem(previousUriKey);
+
+                navigate(previousUri || '/');
             }
         }
     }

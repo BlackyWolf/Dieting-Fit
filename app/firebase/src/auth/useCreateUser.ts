@@ -12,9 +12,11 @@ export const useCreateUser = () => {
 
     return async ({ email, password }: CreateUserOptions) => {
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            const credential = await createUserWithEmailAndPassword(auth, email, password);
+
+            return { user: credential.user };
         } catch (error) {
-            return error as FirebaseError;
+            return { error: error as FirebaseError };
         }
     };
 };

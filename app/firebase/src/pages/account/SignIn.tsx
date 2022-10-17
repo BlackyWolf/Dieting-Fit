@@ -1,8 +1,8 @@
-import { useIsAuthenticated } from "@/auth";
-import { useSignIn } from "@/auth/useSignIn";
-import { Alert, Button, Form, Input, Logo } from "@/components";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useIsAuthenticated, useSignIn } from '@/auth';
+import { Alert, Button, Form, Input, Logo } from '@/components';
+import { previousUriKey } from '@/data';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface FormData {
     email: string;
@@ -11,20 +11,40 @@ interface FormData {
 
 export const SignIn = () => {
     const [error, setError] = useState<string>();
-    const isAuthenticated = useIsAuthenticated();
     const navigate = useNavigate();
+    const isAuthenticated = useIsAuthenticated();
     const signIn = useSignIn();
 
-    if (isAuthenticated) navigate('/');
+    if (isAuthenticated) {
+        const previousUri = window.localStorage.getItem(previousUriKey);
+
+        navigate(previousUri || '/');
+
+        window.localStorage.removeItem(previousUriKey);
+
+        return null;
+    }
 
     async function onSubmit({ email, password }: FormData) {
         if (email && password) {
             const error = await signIn({ email, password });
 
             if (error) {
-                setError(error.message);
+                const { code, message } = error;
+
+                switch (code) {
+                    case 'auth/user-not-found':
+                        setError('The credentials you\'ve entered are not correct.');
+                        break;
+
+                    default:
+                        setError(message);
+                        break;
+                }
             } else {
-                navigate('/');
+                const previousUri = window.localStorage.getItem(previousUriKey);
+
+                navigate(previousUri || '/');
             }
         }
     }
@@ -113,7 +133,7 @@ export const SignIn = () => {
 
                         <div className="mt-6">
                             {error && (
-                                <Alert type="danger" title="Unable to sign up" className="mb-6">
+                                <Alert type="danger" title="Unable to sign in" className="mb-6">
                                     <p>{error}</p>
                                 </Alert>
                             )}

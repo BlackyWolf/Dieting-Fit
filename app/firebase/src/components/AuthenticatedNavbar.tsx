@@ -5,6 +5,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useUser } from 'reactfire';
+import { Logo } from './branding';
 
 interface UiLink {
     name: string;
@@ -32,11 +33,7 @@ export const AuthenticatedNavbar = () => {
                         <div className="relative flex h-16 justify-between">
                             <div className="relative z-10 flex px-2 lg:px-0">
                                 <div className="flex flex-shrink-0 items-center">
-                                    <img
-                                        className="block h-8 w-auto"
-                                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                                        alt="Your Company"
-                                    />
+                                    <Logo size="sm" />
                                 </div>
                             </div>
                             <div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
