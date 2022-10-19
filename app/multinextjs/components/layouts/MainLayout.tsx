@@ -23,7 +23,7 @@ export const MainLayout = ({ children }: Properties) => {
             <TopNav />
 
             <div className="flex flex-grow">
-                <SideNav className="md:w-64 lg:w-96 shadow-md bg-slate-50" />
+                <SideNav />
 
                 <main className="p-8">
                     {children}

@@ -2,7 +2,6 @@ import { StytchLogin, useStytchUser } from '@stytch/nextjs';
 import { Products, StytchEvent, StytchEventType, StytchLoginConfig } from '@stytch/vanilla-js';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import '../styles/SignIn.module.css';
 import { APP_URL } from '../utilities/variables';
 
 interface Properties {
